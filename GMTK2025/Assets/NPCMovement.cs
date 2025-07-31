@@ -10,6 +10,8 @@ public class NPCMovement : MonoBehaviour
     public Collider body;
     public Transform cameraTransform;
 
+    public GameObject deathParticles;
+
     public float moveDistance = 2.5f;
 
     private float pitch;
@@ -63,6 +65,12 @@ public class NPCMovement : MonoBehaviour
     public void StartReplay() {
         started = true;
         startTime = Time.fixedTime;
+    }
+
+    public void DoKill() {
+        GameObject go = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        Destroy(go, 2.0f);
+        Destroy(gameObject);
     }
 
     // Update is called once per frame

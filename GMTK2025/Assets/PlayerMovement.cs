@@ -97,7 +97,6 @@ public class PlayerMovement : MonoBehaviour {
             Vector3 movement = f * inputZ * movementSpeed + r * inputX * movementSpeed;
             movement.y = yVelocity;
             controller.Move(movement * Time.deltaTime);
-            Debug.Log(yVelocity);
             if(Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) {
                 yVelocity = jumpForce;
             }
@@ -119,8 +118,14 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if(Input.GetMouseButtonDown(0)) {
-        
-            Debug.Log("CUM");
+            RaycastHit hit;
+            bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 10000);
+            if(wasHit) {
+                if(hit.collider.transform.root.gameObject.tag == "Wanderer") {
+                    hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
+                    Debug.Log("CUM");
+                }
+            }
         }
     }
 
