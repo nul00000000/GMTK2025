@@ -7,10 +7,7 @@ using TimeThings;
 public class NPCMovement : MonoBehaviour
 {
     public Rigidbody player;
-    public Collider body;
     public Transform cameraTransform;
-
-    public float moveDistance = 2.5f;
 
     private float pitch;
 
@@ -28,33 +25,20 @@ public class NPCMovement : MonoBehaviour
             seedSet = true;
         }
         record = new List<MovementKeyframe>();
-        float x = Random.value * 20 - 10;
+        float x = Random.value * 40 - 20;
         float y = 0;
-        float z = Random.value * 20 - 10;
+        float z = Random.value * 40 - 20;
         float rotY = Random.value * 360;
         record.Add(new MovementKeyframe(0, 0, new Vector3(x, y, z), 0, rotY));
         for(int i = 0; i < 120; i++) {
             float time = i * 2;
             if(Random.value < 0.5) { //new position
-                float tx = Mathf.Sin(rotY * 3.14159f / 180);
-                float tz = Mathf.Cos(rotY * 3.14159f / 180);
-
-                RaycastHit hit;
-                // Debug.Log(body.bounds.center.ToString() + " " + body.bounds.extents.ToString() + " " + new Vector3(tx, 0, tz).ToString() + " " + moveDistance.ToString());
-                bool hitDetect = Physics.BoxCast(new Vector3(x, 1, z), body.bounds.extents, new Vector3(tx, 0, tz), out hit, Quaternion.identity, moveDistance);
-
-                if(hitDetect) {
-                    //do a rotation anyway
-                    rotY += Random.value * 360 - 180;
-                } else {
-                    x += tx * moveDistance;
-                    z += tz * moveDistance;
-                }
+                x += Mathf.Sin(rotY * 3.14159f / 180) * 2.5f;
+                z += Mathf.Cos(rotY * 3.14159f / 180) * 2.5f;
                 // rotY += Random.value * 360 - 180;
             } else {
                 rotY += Random.value * 360 - 180;
             }
-
             record.Add(new MovementKeyframe(time, 0, new Vector3(x, y, z), 0, rotY));
         }
         StartReplay();

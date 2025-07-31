@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public GhostMovement ghostPrefab;
 
-    public Rigidbody player;
+    public CharacterController controller;
     public Transform cameraTransform;
 
     public float maxPitch = 90.0f;
@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour {
     public float jumpForce = 20;
 
     public float loopLength = 60 * 4;
+    public float gravity = 9.81f;
+    public float yVelocity = 0;
 
     private float pitch;
     private float yaw;
@@ -68,9 +70,9 @@ public class PlayerMovement : MonoBehaviour {
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
             yaw += mouseX;
-
+            yVelocity -= gravity * Time.deltaTime;
             // Yaw rotates the body (left/right)
-            player.transform.Rotate(Vector3.up, mouseX, Space.Self);
+            transform.Rotate(Vector3.up, mouseX, Space.Self);
 
             // Pitch rotates the camera (up/down), clamped
             pitch -= mouseY;
@@ -93,16 +95,16 @@ public class PlayerMovement : MonoBehaviour {
             Vector3 f = new Vector3(-r.z, 0, r.x);
 
             Vector3 movement = f * inputZ + r * inputX;
-
-            player.MovePosition(player.transform.position + movement * Time.deltaTime * movementSpeed);
-
-            if(Input.GetKeyDown(KeyCode.Space)) {
-                player.AddForce(new Vector3(0, jumpForce, 0));
+            movement.y = yVelocity;
+            controller.Move(movement * Time.deltaTime * movementSpeed);
+            Debug.Log(yVelocity);
+            if(Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) {
+                yVelocity = jumpForce;
             }
         }
 
         if(record.Count == 0 || Time.fixedTime > record[record.Count - 1].time + 0.1) {
-            record.Add(new MovementKeyframe(Time.fixedTime - startTime, 0, player.transform.position, pitch, yaw));
+            record.Add(new MovementKeyframe(Time.fixedTime - startTime, 0, transform.position, pitch, yaw));
         }
 
         if((Time.fixedTime - startTime) / loopLength > numGhosts + 1) {

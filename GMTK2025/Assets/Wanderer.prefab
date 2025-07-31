@@ -287,6 +287,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2292653330415642652}
-  body: {fileID: 8646347664265884872}
   cameraTransform: {fileID: 606968700129126880}
-  moveDistance: 2.5
