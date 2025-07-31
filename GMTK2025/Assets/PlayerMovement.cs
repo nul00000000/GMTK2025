@@ -15,8 +15,8 @@ public class PlayerMovement : MonoBehaviour {
 
     public float mouseSensitivity = 5;
 
-    public float movementSpeed = 5;
-    public float jumpForce = 20;
+    public float movementSpeed = 4;
+    public float jumpForce = 5;
 
     public float loopLength = 60 * 4;
     public float gravity = 9.81f;
@@ -94,9 +94,9 @@ public class PlayerMovement : MonoBehaviour {
             Vector3 r = cameraTransform.right;
             Vector3 f = new Vector3(-r.z, 0, r.x);
 
-            Vector3 movement = f * inputZ + r * inputX;
+            Vector3 movement = f * inputZ * movementSpeed + r * inputX * movementSpeed;
             movement.y = yVelocity;
-            controller.Move(movement * Time.deltaTime * movementSpeed);
+            controller.Move(movement * Time.deltaTime);
             Debug.Log(yVelocity);
             if(Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) {
                 yVelocity = jumpForce;
@@ -116,6 +116,11 @@ public class PlayerMovement : MonoBehaviour {
                 ghosts[i].record = new List<MovementKeyframe>(record);
             }
             numGhosts++;
+        }
+
+        if(Input.GetMouseButtonDown(0)) {
+        
+            Debug.Log("CUM");
         }
     }
 

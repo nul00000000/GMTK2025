@@ -1488,12 +1488,20 @@ PrefabInstance:
       value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 4468707717580616198, guid: cc443d185087ae34392c17ba306edbaa, type: 3}
+      propertyPath: gravity
+      value: 9.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4468707717580616198, guid: cc443d185087ae34392c17ba306edbaa, type: 3}
+      propertyPath: jumpForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4468707717580616198, guid: cc443d185087ae34392c17ba306edbaa, type: 3}
       propertyPath: ghostPrefab
       value: 
       objectReference: {fileID: 2043516824046544467, guid: c9173ecd7005aa149a9e5d0cd6e9f18a, type: 3}
     - target: {fileID: 4468707717580616198, guid: cc443d185087ae34392c17ba306edbaa, type: 3}
       propertyPath: movementSpeed
-      value: 40
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6627262708846061902, guid: cc443d185087ae34392c17ba306edbaa, type: 3}
       propertyPath: m_Name
