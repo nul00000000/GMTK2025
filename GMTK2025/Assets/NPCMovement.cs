@@ -18,7 +18,9 @@ public class NPCMovement : MonoBehaviour
     private float pitch;
 
     private bool started = false;
-    private float startTime;
+
+    [System.NonSerialized]
+    public float startTime;
 
     public List<MovementKeyframe> record;
     [SerializeField] Animator animator;
@@ -26,17 +28,34 @@ public class NPCMovement : MonoBehaviour
     private int seed = 1234567;
     private static bool seedSet = false;
 
-    public void Start() {
+    public void InitKeyframes(GameObject buildings) {
         if(!seedSet) {
             UnityEngine.Random.InitState(seed);
             seedSet = true;
         }
         record = new List<MovementKeyframe>();
-        float x = UnityEngine.Random.value * 20 - 10;
+        float x = UnityEngine.Random.value * 100 - 50;
         float y = 0;
-        float z = UnityEngine.Random.value * 20 - 10;
+        float z = UnityEngine.Random.value * 100 - 50;
+
+        bool inBuilding = true;
+        Collider[] cols = buildings.GetComponentsInChildren<Collider>();
+
+        while(inBuilding) {
+            inBuilding = false;
+            for(int i = 0; i < cols.Length; i++) {
+                if(cols[i].bounds.Contains(new Vector3(x, 1, z))) {
+                    inBuilding = true;
+                    x = UnityEngine.Random.value * 100 - 50;
+                    y = 0;
+                    z = UnityEngine.Random.value * 100 - 50;
+                    break;
+                }
+            }
+        }
+
         float rotY = UnityEngine.Random.value * 360;
-        record.Add(new MovementKeyframe(0, 0, new Vector3(x, y, z), 0, rotY));
+        record.Add(new MovementKeyframe(0, new Vector3(x, y, z), 0, rotY));
         for(int i = 0; i < 120; i++) {
             float time = i * 2;
             if(UnityEngine.Random.value < 0.5) { //new position
@@ -59,8 +78,11 @@ public class NPCMovement : MonoBehaviour
                 rotY += UnityEngine.Random.value * 360 - 180;
             }
 
-            record.Add(new MovementKeyframe(time, 0, new Vector3(x, y, z), 0, rotY));
+            record.Add(new MovementKeyframe(time, new Vector3(x, y, z), 0, rotY));
         }
+    }
+
+    public void Start() {
         StartReplay();
     }
 
@@ -72,7 +94,7 @@ public class NPCMovement : MonoBehaviour
     public void DoKill() {
         GameObject go = Instantiate(deathParticles, transform.position, Quaternion.identity);
         Destroy(go, 2.0f);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
