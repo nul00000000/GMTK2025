@@ -6,8 +6,6 @@ using TimeThings;
 
 public class PlayerMovement : MonoBehaviour {
 
-    public GhostMovement ghostPrefab;
-
     public CharacterController controller;
     public Transform cameraTransform;
 
@@ -18,7 +16,6 @@ public class PlayerMovement : MonoBehaviour {
     public float movementSpeed = 4;
     public float jumpForce = 5;
 
-    public float loopLength = 60 * 4;
     public float gravity = 9.81f;
     public float yVelocity = 0;
 
@@ -27,20 +24,15 @@ public class PlayerMovement : MonoBehaviour {
 
     private bool paused = true;
 
-    private bool grounded = true;
-
     private float startTime;
 
-    private int numGhosts;
-
-    private List<MovementKeyframe> record;
-
-    private List<GhostMovement> ghosts;
+    [System.NonSerialized]
+    public List<MovementKeyframe> record;
+    public List<ActionKeyframe> actionRecord;
 
     Quaternion baseRotation;
     void Start() {
         record = new List<MovementKeyframe>();
-        ghosts = new List<GhostMovement>();
 
         startTime = Time.fixedTime;
 
@@ -103,18 +95,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if(record.Count == 0 || Time.fixedTime > record[record.Count - 1].time + 0.1) {
-            record.Add(new MovementKeyframe(Time.fixedTime - startTime, 0, transform.position, pitch, yaw));
-        }
-
-        if((Time.fixedTime - startTime) / loopLength > numGhosts + 1) {
-            GhostMovement ghost = (GhostMovement) Instantiate(ghostPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            ghost.record = new List<MovementKeyframe>(record);
-            ghost.StartReplay();
-            ghosts.Add(ghost);
-            for(int i = 0; i < numGhosts; i++) {
-                ghosts[i].record = new List<MovementKeyframe>(record);
-            }
-            numGhosts++;
+            record.Add(new MovementKeyframe(Time.fixedTime - startTime, transform.position, pitch, yaw));
         }
 
         if(Input.GetMouseButtonDown(0)) {
@@ -123,7 +104,7 @@ public class PlayerMovement : MonoBehaviour {
             if(wasHit) {
                 if(hit.collider.transform.root.gameObject.tag == "Wanderer") {
                     hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
-                    Debug.Log("CUM");
+                    actionRecord.Add(new ActionRecord(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
                 }
             }
         }

@@ -46,14 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f79956760bfaa2342b7954ee973535b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ghostPrefab: {fileID: 2043516824046544467, guid: c9173ecd7005aa149a9e5d0cd6e9f18a, type: 3}
   controller: {fileID: 2906543240104641977}
   cameraTransform: {fileID: 5629023500866888961}
   maxPitch: 90
   mouseSensitivity: 5
   movementSpeed: 40
   jumpForce: 0.8
-  loopLength: 240
   gravity: 4.2
   yVelocity: 0
 --- !u!143 &2906543240104641977
@@ -81,7 +79,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &5266977736558495325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2403534445776311452, guid: cf69b72782c6ad644942a0c6b7079b18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.687
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 2403534445776311452, guid: cf69b72782c6ad644942a0c6b7079b18, type: 3}
       propertyPath: m_LocalPosition.z

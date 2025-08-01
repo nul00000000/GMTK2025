@@ -21,16 +21,23 @@ public class GhostMovement : MonoBehaviour {
     private bool started = false;
     private float startTime;
 
+    [System.NonSerialized]
     public List<MovementKeyframe> record;
+    [System.NonSerialized]
+    public List<ActionKeyframe> actionRecord;
+
+    private float lastActionTime;
 
     public void StartReplay() {
         started = true;
         startTime = Time.fixedTime;
+        lastActionTime = 0;
     }
 
     // Update is called once per frame
     void Update() {
         if(started) {
+            //movement
             float currentTime = Time.fixedTime - startTime;
             int first = record.Count - 2;
             int second = record.Count - 1;
@@ -58,6 +65,15 @@ public class GhostMovement : MonoBehaviour {
             }
 
             player.MovePosition(pos);
+
+            //actions
+            for(int i = 1; i < actionRecord.Count; i++) {
+                if(actionRecord[i].time > currentTime) {
+                    first = i - 1;
+                    second = i;
+                    break;
+                }
+            }
         }
     }
 }
