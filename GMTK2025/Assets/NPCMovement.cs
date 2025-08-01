@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TimeThings;
+using System;
 
 public class NPCMovement : MonoBehaviour
 {
@@ -20,24 +21,25 @@ public class NPCMovement : MonoBehaviour
     private float startTime;
 
     public List<MovementKeyframe> record;
+    [SerializeField] Animator animator;
 
     private int seed = 1234567;
     private static bool seedSet = false;
 
     public void Start() {
         if(!seedSet) {
-            Random.InitState(seed);
+            UnityEngine.Random.InitState(seed);
             seedSet = true;
         }
         record = new List<MovementKeyframe>();
-        float x = Random.value * 20 - 10;
+        float x = UnityEngine.Random.value * 20 - 10;
         float y = 0;
-        float z = Random.value * 20 - 10;
-        float rotY = Random.value * 360;
+        float z = UnityEngine.Random.value * 20 - 10;
+        float rotY = UnityEngine.Random.value * 360;
         record.Add(new MovementKeyframe(0, 0, new Vector3(x, y, z), 0, rotY));
         for(int i = 0; i < 120; i++) {
             float time = i * 2;
-            if(Random.value < 0.5) { //new position
+            if(UnityEngine.Random.value < 0.5) { //new position
                 float tx = Mathf.Sin(rotY * 3.14159f / 180);
                 float tz = Mathf.Cos(rotY * 3.14159f / 180);
 
@@ -47,14 +49,14 @@ public class NPCMovement : MonoBehaviour
 
                 if(hitDetect) {
                     //do a rotation anyway
-                    rotY += Random.value * 360 - 180;
+                    rotY += UnityEngine.Random.value * 360 - 180;
                 } else {
                     x += tx * moveDistance;
                     z += tz * moveDistance;
                 }
-                // rotY += Random.value * 360 - 180;
+                // rotY += UnityEngine.Random.value * 360 - 180;
             } else {
-                rotY += Random.value * 360 - 180;
+                rotY += UnityEngine.Random.value * 360 - 180;
             }
 
             record.Add(new MovementKeyframe(time, 0, new Vector3(x, y, z), 0, rotY));
@@ -102,6 +104,14 @@ public class NPCMovement : MonoBehaviour
                 cameraTransform.localEulerAngles = camEuler;
             }
 
+
+            Vector3 posDiff = record[first].pos - record[second].pos;
+
+            if (Math.Abs(posDiff.magnitude) > .01) {
+                animator.Play("Walk");
+            } else {
+                animator.Play("Idle");
+            }
             player.MovePosition(pos);
         }
     }
