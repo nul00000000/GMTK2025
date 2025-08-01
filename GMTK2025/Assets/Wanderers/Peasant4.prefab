@@ -52,7 +52,6 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   deathParticles: {fileID: 7018049475912752728, guid: a91f7c7afe0332c48a2d2b1998f2f628, type: 3}
   moveDistance: 2.5
-  animator: {fileID: 7943226338510604216}
 --- !u!136 &3537927918620855674
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -182,7 +181,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1901589377768324149}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 678a91fd07848e241a7f6fa9540b2e59, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 84f779ace422b4144be1ef7bd6f66c3a, type: 3}
   m_Controller: {fileID: 9100000, guid: 799c1d50a1a617a43a8ccb64892c3081, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0

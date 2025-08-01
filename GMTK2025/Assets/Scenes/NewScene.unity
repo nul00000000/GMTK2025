@@ -1757,6 +1757,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wandererPrefab: {fileID: 7620414869286983893, guid: c1ff2bc234bd671498e2d9c0f3b993f3, type: 3}
+  availableWanderers:
+  - {fileID: 903424990513366605, guid: 9960fcde903dad6459099f991ace1c39, type: 3}
+  - {fileID: 6788383614396427292, guid: 666dec7582737a74895e51b867c8acd3, type: 3}
+  - {fileID: 4790772739937722876, guid: 219a9f71f4634e346a8ef5203e17fadd, type: 3}
+  - {fileID: 6788383614396427292, guid: 2c1189f92466d424d9c5bdb0c1a68111, type: 3}
+  - {fileID: 3824918022627960517, guid: d06787f5f8efe094fa51f0ab03451e91, type: 3}
+  - {fileID: 6788383614396427292, guid: 76cd13ba04fc8b246bf67ae539c96563, type: 3}
+  - {fileID: 6788383614396427292, guid: 03bd4be7dd7f09045a6b4f2fdc999488, type: 3}
+  - {fileID: 6788383614396427292, guid: 7bddc99c83e3332418c94462e6213107, type: 3}
+  - {fileID: 6788383614396427292, guid: f5e82e34fecc1e040931272b76303f00, type: 3}
+  - {fileID: 6788383614396427292, guid: bfd9d978688db084fa75e0fddd93c3f8, type: 3}
+  - {fileID: 6788383614396427292, guid: 97a01cf4a3cda0248be3081615747509, type: 3}
+  - {fileID: 6788383614396427292, guid: 2246b8c6b1c4b7e4d8ab9f4aae9deee8, type: 3}
+  - {fileID: 6788383614396427292, guid: be73c1cde9821e549aec181c0347da59, type: 3}
   ghostPrefab: {fileID: 2043516824046544467, guid: c9173ecd7005aa149a9e5d0cd6e9f18a, type: 3}
   player: {fileID: 1493962466}
   numWanderers: 10

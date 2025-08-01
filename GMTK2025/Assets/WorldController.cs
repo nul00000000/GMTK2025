@@ -7,6 +7,7 @@ using TimeThings;
 public class WorldController : MonoBehaviour {
 
     public NPCMovement wandererPrefab;
+    public List<NPCMovement> availableWanderers;
     public GhostMovement ghostPrefab;
 
     public PlayerMovement player;
@@ -21,6 +22,7 @@ public class WorldController : MonoBehaviour {
     private int numGhosts;
 
     private float startTime;
+    private static int randomSeed = 123456789;
 
     public void SetupLoop(List<MovementKeyframe> record, List<ActionKeyframe> actionRecord) {
         GhostMovement ghost = (GhostMovement) Instantiate(ghostPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -37,15 +39,21 @@ public class WorldController : MonoBehaviour {
         for(int i = 0; i < numWanderers; i++) {
             wanderers[i].startTime = t;
             wanderers[i].gameObject.SetActive(true);
+            wanderers[i].dead = false;
         }
+
+
     }
 
     void Start() {
+        Random.InitState(randomSeed);
+
         wanderers = new List<NPCMovement>();
         ghosts = new List<GhostMovement>();
 
         for(int i = 0; i < numWanderers; i++) {
-            NPCMovement wanda = Instantiate(wandererPrefab).GetComponent<NPCMovement>();
+            NPCMovement prefab = availableWanderers[(int) (availableWanderers.Count * Random.value)];
+            NPCMovement wanda = Instantiate(prefab).GetComponent<NPCMovement>();
             wanda.InitKeyframes(this.gameObject);
             wanderers.Add(wanda);
         }

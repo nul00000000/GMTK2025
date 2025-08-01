@@ -28,6 +28,8 @@ public class NPCMovement : MonoBehaviour
 
     private int seed = 1234567;
     private static bool seedSet = false;
+    public bool isTimeKeeper = false;
+    public bool dead = false;
     
     public void InitRandomMovement(float x, float y, float z) {
         float rotY = UnityEngine.Random.value * 360;
@@ -59,10 +61,10 @@ public class NPCMovement : MonoBehaviour
     }
 
     public void InitKeyframes(GameObject buildings) {
-        if(!seedSet) {
-            UnityEngine.Random.InitState(seed);
-            seedSet = true;
-        }
+        // if(!seedSet) {
+        //     UnityEngine.Random.InitState(seed);
+        //     seedSet = true;
+        // }
 
         record = new List<MovementKeyframe>();
         
@@ -105,14 +107,19 @@ public class NPCMovement : MonoBehaviour
     }
 
     public void DoKill() {
-        GameObject go = Instantiate(deathParticles, transform.position, Quaternion.identity);
-        Destroy(go, 2.0f);
-        gameObject.SetActive(false);
+        if (isTimeKeeper) {
+            GameObject go = Instantiate(deathParticles, transform.position, Quaternion.identity);
+            Destroy(go, 2.0f);
+            gameObject.SetActive(false);
+        } else {
+            animator.Play("Death");
+        }
+        dead = true;
     }
 
     // Update is called once per frame
     void Update() {
-        if(started) {
+        if(started && !dead) {
             float currentTime = Time.fixedTime - startTime;
             int first = record.Count - 2;
             int second = record.Count - 1;
