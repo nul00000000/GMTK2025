@@ -53,7 +53,7 @@ public class NPCMovement : MonoBehaviour
         }
 
         float rotY = Random.value * 360;
-        record.Add(new MovementKeyframe(0, 0, new Vector3(x, y, z), 0, rotY));
+        record.Add(new MovementKeyframe(0, new Vector3(x, y, z), 0, rotY));
         for(int i = 0; i < 120; i++) {
             float time = i * 2;
             if(Random.value < 0.5) { //new position
@@ -76,7 +76,7 @@ public class NPCMovement : MonoBehaviour
                 rotY += Random.value * 360 - 180;
             }
 
-            record.Add(new MovementKeyframe(time, 0, new Vector3(x, y, z), 0, rotY));
+            record.Add(new MovementKeyframe(time, new Vector3(x, y, z), 0, rotY));
         }
     }
 

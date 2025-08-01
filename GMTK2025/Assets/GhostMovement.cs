@@ -67,11 +67,20 @@ public class GhostMovement : MonoBehaviour {
             player.MovePosition(pos);
 
             //actions
-            for(int i = 1; i < actionRecord.Count; i++) {
-                if(actionRecord[i].time > currentTime) {
-                    first = i - 1;
-                    second = i;
+            int actionIndex = -1;
+            for(int i = 0; i < actionRecord.Count; i++) {
+                if(actionRecord[i].time > lastActionTime && currentTime > actionRecord[i].time) {
+                    actionIndex = i;
+                    lastActionTime = actionRecord[i].time;
                     break;
+                }
+            }
+            if(actionIndex != -1) {
+                ActionKeyframe action = actionRecord[actionIndex];
+                if(action.type == 0) {
+                    if(action.interacted.tag == "Wanderer") {
+                        action.interacted.GetComponent<NPCMovement>().DoKill();
+                    }
                 }
             }
         }

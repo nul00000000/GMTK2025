@@ -25,7 +25,7 @@ public class WorldController : MonoBehaviour {
     public void SetupLoop(List<MovementKeyframe> record, List<ActionKeyframe> actionRecord) {
         GhostMovement ghost = (GhostMovement) Instantiate(ghostPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         ghost.record = new List<MovementKeyframe>(record);
-        ghost.actionRecord = new List<ActionKeyframe>(record);
+        ghost.actionRecord = new List<ActionKeyframe>(actionRecord);
         ghost.StartReplay();
         ghosts.Add(ghost);
         for(int i = 0; i < numGhosts; i++) {
@@ -54,7 +54,7 @@ public class WorldController : MonoBehaviour {
 
     void Update() {
         if((Time.fixedTime - startTime) / loopLength > numGhosts + 1) {
-            SetupLoop(player.record);
+            SetupLoop(player.record, player.actionRecord);
         }
     }
 }

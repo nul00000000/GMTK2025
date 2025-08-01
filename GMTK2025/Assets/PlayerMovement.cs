@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
     Quaternion baseRotation;
     void Start() {
         record = new List<MovementKeyframe>();
+        actionRecord = new List<ActionKeyframe>();
 
         startTime = Time.fixedTime;
 
@@ -104,7 +105,7 @@ public class PlayerMovement : MonoBehaviour {
             if(wasHit) {
                 if(hit.collider.transform.root.gameObject.tag == "Wanderer") {
                     hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
-                    actionRecord.Add(new ActionRecord(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
+                    actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
                 }
             }
         }
