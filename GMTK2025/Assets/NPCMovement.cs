@@ -4,6 +4,7 @@ using UnityEngine;
 
 using TimeThings;
 using System;
+using Unity.VisualScripting;
 
 public class NPCMovement : MonoBehaviour
 {
@@ -23,37 +24,12 @@ public class NPCMovement : MonoBehaviour
     public float startTime;
 
     public List<MovementKeyframe> record;
-    [SerializeField] Animator animator;
+    private Animator animator;
 
     private int seed = 1234567;
     private static bool seedSet = false;
-
-    public void InitKeyframes(GameObject buildings) {
-        if(!seedSet) {
-            UnityEngine.Random.InitState(seed);
-            seedSet = true;
-        }
-        record = new List<MovementKeyframe>();
-        float x = UnityEngine.Random.value * 100 - 50;
-        float y = 0;
-        float z = UnityEngine.Random.value * 100 - 50;
-
-        bool inBuilding = true;
-        Collider[] cols = buildings.GetComponentsInChildren<Collider>();
-
-        while(inBuilding) {
-            inBuilding = false;
-            for(int i = 0; i < cols.Length; i++) {
-                if(cols[i].bounds.Contains(new Vector3(x, 1, z))) {
-                    inBuilding = true;
-                    x = UnityEngine.Random.value * 100 - 50;
-                    y = 0;
-                    z = UnityEngine.Random.value * 100 - 50;
-                    break;
-                }
-            }
-        }
-
+    
+    public void InitRandomMovement(float x, float y, float z) {
         float rotY = UnityEngine.Random.value * 360;
         record.Add(new MovementKeyframe(0, new Vector3(x, y, z), 0, rotY));
         for(int i = 0; i < 120; i++) {
@@ -82,8 +58,45 @@ public class NPCMovement : MonoBehaviour
         }
     }
 
+    public void InitKeyframes(GameObject buildings) {
+        if(!seedSet) {
+            UnityEngine.Random.InitState(seed);
+            seedSet = true;
+        }
+
+        record = new List<MovementKeyframe>();
+        
+        if (buildings == null) {
+            InitRandomMovement(transform.position.x, transform.position.y, transform.position.z);
+        }
+
+        float x = UnityEngine.Random.value * 100 - 50;
+        float y = 0;
+        float z = UnityEngine.Random.value * 100 - 50;
+
+        bool inBuilding = true;
+        Collider[] cols = buildings.GetComponentsInChildren<Collider>();
+
+        while(inBuilding) {
+            inBuilding = false;
+            for(int i = 0; i < cols.Length; i++) {
+                if(cols[i].bounds.Contains(new Vector3(x, 1, z))) {
+                    inBuilding = true;
+                    x = UnityEngine.Random.value * 100 - 50;
+                    y = 0;
+                    z = UnityEngine.Random.value * 100 - 50;
+                    break;
+                }
+            }
+        }
+
+        InitRandomMovement(x, y, z);
+    }
+
     public void Start() {
+        animator = GetComponentInChildren<Animator>();
         StartReplay();
+        InitKeyframes(null);
     }
 
     public void StartReplay() {

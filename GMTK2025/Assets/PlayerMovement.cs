@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TimeThings;
+using Unity.VisualScripting;
+using System;
 
 public class PlayerMovement : MonoBehaviour {
 
+    [SerializeField] GameObject pauseMenu;
     public CharacterController controller;
     public Transform cameraTransform;
 
@@ -38,6 +41,7 @@ public class PlayerMovement : MonoBehaviour {
         startTime = Time.fixedTime;
 
         baseRotation = cameraTransform.localRotation;
+        
     }
 
     public void Awake() {
@@ -48,14 +52,21 @@ public class PlayerMovement : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        mouseSensitivity = EasyGameState.getPrefSensitivity();
+
         if(Input.GetKeyUp(KeyCode.Escape)) {
             paused = !paused;
-            if(paused) {
+            EasyGameState.gamePaused = paused; // lol
+
+            
+            if(EasyGameState.gamePaused) {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                pauseMenu.SetActive(true);
             } else {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                pauseMenu.SetActive(false);
             }
         }
         if(!paused) {
