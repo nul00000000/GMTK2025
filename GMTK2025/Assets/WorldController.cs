@@ -42,9 +42,7 @@ public class WorldController : MonoBehaviour {
 
         float t = Time.fixedTime;
         for(int i = 0; i < numWanderers; i++) {
-            wanderers[i].startTime = t;
-            wanderers[i].gameObject.SetActive(true);
-            wanderers[i].dead = false;
+            wanderers[i].DoReset(t);
         }
 
         DoorScripts[] doors = FindObjectsOfType<DoorScripts>();
@@ -79,9 +77,7 @@ public class WorldController : MonoBehaviour {
 
         float t = Time.fixedTime;
         for(int i = 0; i < numWanderers; i++) {
-            wanderers[i].startTime = t;
-            wanderers[i].gameObject.SetActive(true);
-            wanderers[i].dead = false;
+            wanderers[i].DoReset(t);
         }
 
         //reset player pos

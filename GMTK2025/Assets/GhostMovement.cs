@@ -59,6 +59,13 @@ public class GhostMovement : MonoBehaviour {
 
             Vector3 pos = Vector3.Lerp(record[first].pos, record[second].pos, (currentTime - record[first].time) / (record[second].time - record[first].time));
 
+            //test if path is clear
+            bool didHit = Physics.CapsuleCast(pos + new Vector3(0, 0.5f, 0), pos + new Vector3(0, 1.5f, 0), 0.3f, Vector3.Normalize(record[second].pos - record[first].pos), Vector3.Distance(pos, record[second].pos));
+            if(didHit) {
+                Debug.Log("witawawy clipping rn");
+                buildings.ResetToLoop(ghostNum);
+            }
+
             // Yaw rotates the body (left/right)
             Vector3 rot = player.transform.localEulerAngles;
             rot.y = Mathf.Lerp(record[first].rotY, record[second].rotY, (currentTime - record[first].time) / (record[second].time - record[first].time));

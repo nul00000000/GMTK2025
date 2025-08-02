@@ -118,7 +118,16 @@ public class NPCMovement : MonoBehaviour
             gameObject.SetActive(false);
         } else {
             animator.Play("Death");
+            player.constraints |= RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
         }
+    }
+
+    public void DoReset(float newStartTime) {
+        dead = false;
+        startTime = newStartTime;
+        gameObject.SetActive(true);
+        dead = false;
+        player.constraints &= ~(RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ);
     }
 
     // Update is called once per frame
