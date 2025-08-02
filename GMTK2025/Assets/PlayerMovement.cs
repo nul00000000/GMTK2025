@@ -172,9 +172,9 @@ public class PlayerMovement : MonoBehaviour {
         bool wasHit2 = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 10000);
 
         if (Input.GetMouseButtonDown(0)) {
-               fpsController.Shoot(hit);
+                fpsController.Shoot(hit);
 
-                if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer") {
+                if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer" && !hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().dead) {
                     hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
                     actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
                     

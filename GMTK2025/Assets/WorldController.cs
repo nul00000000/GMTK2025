@@ -91,6 +91,9 @@ public class WorldController : MonoBehaviour {
             NPCMovement prefab = availableWanderers[(int) (availableWanderers.Count * Random.value)];
             NPCMovement wanda = Instantiate(prefab).GetComponent<NPCMovement>();
             wanda.InitKeyframes(this.gameObject);
+            if(i < 5) {
+                wanda.isTimeKeeper = true;
+            }
             wanderers.Add(wanda);
         }
         startTime = Time.fixedTime;

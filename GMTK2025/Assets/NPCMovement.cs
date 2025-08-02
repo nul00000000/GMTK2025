@@ -96,7 +96,7 @@ public class NPCMovement : MonoBehaviour
     public void Start() {
         animator = GetComponentInChildren<Animator>();
         StartReplay();
-        InitKeyframes(null);
+        // InitKeyframes(null);
     }
 
     public void StartReplay() {

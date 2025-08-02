@@ -91,8 +91,9 @@ public class GhostMovement : MonoBehaviour {
                         NPCMovement npc = action.interacted.GetComponent<NPCMovement>();
                         if(npc.dead) {
                             buildings.ResetToLoop(ghostNum);
+                        } else {
+                            npc.DoKill();
                         }
-                        npc.DoKill();
                     }
                 }
             }
