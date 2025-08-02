@@ -9,6 +9,7 @@ using System;
 public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] FPScript fpsController;
     public CharacterController controller;
     public Transform cameraTransform;
 
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour {
     public List<ActionKeyframe> actionRecord;
 
     Quaternion baseRotation;
+    public LayerMask doorLayer;
 
     public void SetToTime(float timeFromStart, float newStartTime) {
         int first = record.Count - 2;
@@ -146,15 +148,31 @@ public class PlayerMovement : MonoBehaviour {
             record.Add(new MovementKeyframe(Time.fixedTime - startTime, transform.position, pitch, yaw));
         }
 
-        if(Input.GetMouseButtonDown(0)) {
-            RaycastHit hit;
-            bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 10000);
-            if(wasHit) {
-                if(hit.collider.transform.root.gameObject.tag == "Wanderer") {
-                    hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
-                    actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
+        RaycastHit doorHit;
+
+        bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out doorHit, 10000, doorLayer);
+        if (wasHit) {
+            if (doorHit.collider.transform.root.gameObject.tag == "Door") {
+                if (Input.GetKeyDown(KeyCode.E)) {
+                    Debug.Log("Something should happen");
+                    doorHit.collider.transform.root.gameObject.GetComponentInChildren<DoorScripts>().Toggle();
                 }
             }
+
+            
+        }
+// bandaid
+        RaycastHit hit;
+        bool wasHit2 = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 10000);
+
+        if (Input.GetMouseButtonDown(0)) {
+               fpsController.Shoot(hit);
+
+                if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer") {
+                    hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
+                    actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
+                    
+                }
         }
     }
 

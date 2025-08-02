@@ -2154,6 +2154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 3577903319582780642}
+  fpsController: {fileID: 3954277508226245369}
   controller: {fileID: 2906543240104641977}
   cameraTransform: {fileID: 5629023500866888961}
   maxPitch: 90
@@ -2162,6 +2163,9 @@ MonoBehaviour:
   jumpForce: 0.8
   gravity: 4.2
   yVelocity: 0
+  doorLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!143 &2906543240104641977
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2549,6 +2553,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf69b72782c6ad644942a0c6b7079b18, type: 3}
+--- !u!114 &3954277508226245369 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9221254557551666340, guid: cf69b72782c6ad644942a0c6b7079b18, type: 3}
+  m_PrefabInstance: {fileID: 5266977736558495325}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6f9d7867120aab418bce4746b7def61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5629023500866888961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 506196824018314076, guid: cf69b72782c6ad644942a0c6b7079b18, type: 3}
