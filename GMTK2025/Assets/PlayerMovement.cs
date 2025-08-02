@@ -162,14 +162,10 @@ public class PlayerMovement : MonoBehaviour {
 
         bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out doorHit, 10000, doorLayer);
         if (wasHit) {
-            if (doorHit.collider.transform.root.gameObject.tag == "Door") {
-                if (Input.GetKeyDown(KeyCode.E)) {
-                    Debug.Log("Something should happen");
-                    doorHit.collider.transform.root.gameObject.GetComponentInChildren<DoorScripts>().Toggle();
-                }
+            if (Input.GetKeyDown(KeyCode.E)) {
+                Debug.Log("Something should happen");
+                doorHit.collider.transform.root.gameObject.GetComponentInChildren<DoorScripts>().Toggle();
             }
-
-            
         }
 // bandaid
         RaycastHit hit;
