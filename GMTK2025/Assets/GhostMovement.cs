@@ -16,15 +16,19 @@ public class GhostMovement : MonoBehaviour {
     public float movementSpeed = 5;
     public float jumpForce = 20;
 
-    private float pitch;
-
     private bool started = false;
-    private float startTime;
+    [System.NonSerialized]
+    public float startTime;
 
     [System.NonSerialized]
     public List<MovementKeyframe> record;
     [System.NonSerialized]
     public List<ActionKeyframe> actionRecord;
+
+    [System.NonSerialized]
+    public WorldController buildings;
+    [System.NonSerialized]
+    public int ghostNum;
 
     private float lastActionTime;
 
@@ -79,7 +83,11 @@ public class GhostMovement : MonoBehaviour {
                 ActionKeyframe action = actionRecord[actionIndex];
                 if(action.type == 0) {
                     if(action.interacted.tag == "Wanderer") {
-                        action.interacted.GetComponent<NPCMovement>().DoKill();
+                        NPCMovement npc = action.interacted.GetComponent<NPCMovement>();
+                        if(npc.dead) {
+                            buildings.ResetToLoop(ghostNum);
+                        }
+                        npc.DoKill();
                     }
                 }
             }

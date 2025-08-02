@@ -34,6 +34,42 @@ public class PlayerMovement : MonoBehaviour {
     public List<ActionKeyframe> actionRecord;
 
     Quaternion baseRotation;
+
+    public void SetToTime(float timeFromStart, float newStartTime) {
+        int first = record.Count - 2;
+        int second = record.Count - 1;
+        for(int i = 1; i < record.Count; i++) {
+            if(record[i].time > timeFromStart) {
+                first = i - 1;
+                second = i;
+                break;
+            }
+        }
+
+        Vector3 pos = Vector3.Lerp(record[first].pos, record[second].pos, (timeFromStart - record[first].time) / (record[second].time - record[first].time));
+
+        // Yaw rotates the body (left/right)
+        Vector3 rot = transform.localEulerAngles;
+        rot.y = Mathf.Lerp(record[first].rotY, record[second].rotY, (timeFromStart - record[first].time) / (record[second].time - record[first].time));
+        transform.localEulerAngles = rot;
+
+        if (cameraTransform != null) {
+            Vector3 camEuler = cameraTransform.localEulerAngles;
+            camEuler.x = Mathf.Lerp(record[first].rotX, record[second].rotX, (timeFromStart - record[first].time) / (record[second].time - record[first].time));
+            camEuler.y = 0f;
+            camEuler.z = 0f;
+            cameraTransform.localEulerAngles = camEuler;
+        }
+
+        for(int i = record.Count - 1; i >= 0; i--) {
+            if(record[i].time > timeFromStart) {
+                record.RemoveAt(i);
+            }
+        }
+
+        startTime = newStartTime;
+    }
+
     void Start() {
         record = new List<MovementKeyframe>();
         actionRecord = new List<ActionKeyframe>();
@@ -106,7 +142,7 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
-        if(record.Count == 0 || Time.fixedTime > record[record.Count - 1].time + 0.1) {
+        if(record.Count == 0 || Time.fixedTime - startTime > record[record.Count - 1].time + 0.1) {
             record.Add(new MovementKeyframe(Time.fixedTime - startTime, transform.position, pitch, yaw));
         }
 

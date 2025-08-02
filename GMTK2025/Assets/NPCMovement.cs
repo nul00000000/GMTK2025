@@ -26,8 +26,6 @@ public class NPCMovement : MonoBehaviour
     public List<MovementKeyframe> record;
     private Animator animator;
 
-    private int seed = 1234567;
-    private static bool seedSet = false;
     public bool isTimeKeeper = false;
     public bool dead = false;
     

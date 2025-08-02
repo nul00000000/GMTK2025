@@ -1774,7 +1774,7 @@ MonoBehaviour:
   ghostPrefab: {fileID: 2043516824046544467, guid: c9173ecd7005aa149a9e5d0cd6e9f18a, type: 3}
   player: {fileID: 1493962466}
   numWanderers: 10
-  loopLength: 5
+  loopLength: 10
 --- !u!1 &1976574507
 GameObject:
   m_ObjectHideFlags: 0

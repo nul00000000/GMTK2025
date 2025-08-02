@@ -26,12 +26,15 @@ public class WorldController : MonoBehaviour {
 
     public void SetupLoop(List<MovementKeyframe> record, List<ActionKeyframe> actionRecord) {
         GhostMovement ghost = (GhostMovement) Instantiate(ghostPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        ghost.buildings = this;
+        ghost.ghostNum = numGhosts;
         ghost.record = new List<MovementKeyframe>(record);
         ghost.actionRecord = new List<ActionKeyframe>(actionRecord);
         ghost.StartReplay();
         ghosts.Add(ghost);
         for(int i = 0; i < numGhosts; i++) {
             ghosts[i].record = new List<MovementKeyframe>(record);
+            ghost.actionRecord = new List<ActionKeyframe>(actionRecord);
         }
         numGhosts++;
 
@@ -42,7 +45,27 @@ public class WorldController : MonoBehaviour {
             wanderers[i].dead = false;
         }
 
+    }
 
+    public void ResetToLoop(int numLoop) {
+        Debug.Log("Resetting to loop " + numLoop);
+
+        float newTime = numLoop * loopLength;
+
+        startTime = Time.fixedTime - newTime;
+
+        for(int i = numGhosts - 1; i >= numLoop; i--) {
+            Destroy(ghosts[i].gameObject);
+            ghosts.RemoveAt(i);
+        }
+        numGhosts = numLoop;
+        for(int i = 0; i < numGhosts; i++) {
+        //i think this is good? test thouroughly
+            ghosts[i].startTime = startTime + (i + 1) * loopLength;
+        }
+
+        //reset player pos
+        player.SetToTime(newTime, startTime);
     }
 
     void Start() {
