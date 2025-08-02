@@ -105,6 +105,7 @@ public class NPCMovement : MonoBehaviour
     }
 
     public void DoKill() {
+        dead = true;
         if (isTimeKeeper) {
             GameObject go = Instantiate(deathParticles, transform.position, Quaternion.identity);
             Destroy(go, 2.0f);
@@ -112,7 +113,6 @@ public class NPCMovement : MonoBehaviour
         } else {
             animator.Play("Death");
         }
-        dead = true;
     }
 
     // Update is called once per frame
