@@ -16,8 +16,10 @@ public class WorldController : MonoBehaviour {
 
     public float loopLength = 60 * 4;
 
-    private List<GhostMovement> ghosts;
-    private List<NPCMovement> wanderers;
+    public List<GhostMovement> ghosts;
+    public List<NPCMovement> wanderers;
+
+    public bool generateRandomNPCs;
 
     private int numGhosts;
 
@@ -82,21 +84,28 @@ public class WorldController : MonoBehaviour {
     }
 
     void Start() {
-        Random.InitState(randomSeed);
+        if(generateRandomNPCs) {
+            Random.InitState(randomSeed);
 
-        wanderers = new List<NPCMovement>();
-        ghosts = new List<GhostMovement>();
+            wanderers = new List<NPCMovement>();
+            ghosts = new List<GhostMovement>();
 
-        for(int i = 0; i < numWanderers; i++) {
-            NPCMovement prefab = availableWanderers[(int) (availableWanderers.Count * Random.value)];
-            NPCMovement wanda = Instantiate(prefab).GetComponent<NPCMovement>();
-            wanda.InitKeyframes(this.gameObject);
-            if(i < 5) {
-                wanda.isTimeKeeper = true;
+            for(int i = 0; i < numWanderers; i++) {
+                NPCMovement prefab = availableWanderers[(int) (availableWanderers.Count * Random.value)];
+                NPCMovement wanda = Instantiate(prefab).GetComponent<NPCMovement>();
+                wanda.InitKeyframes(this.gameObject);
+                if(i < 5) {
+                    wanda.isTimeKeeper = true;
+                }
+                wanderers.Add(wanda);
             }
-            wanderers.Add(wanda);
+            startTime = Time.fixedTime;
+        } else {
+            numWanderers = wanderers.Count;
+            for(int i = 0; i < numWanderers; i++) {
+                wanderers[i].InitKeyframes(this.gameObject, true);
+            }
         }
-        startTime = Time.fixedTime;
     }
 
     void Update() {

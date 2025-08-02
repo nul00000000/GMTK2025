@@ -84,15 +84,35 @@ public class GhostMovement : MonoBehaviour {
                 }
             }
             if(actionIndex != -1) {
-                Debug.Log("ACTION! from " + ghostNum);
                 ActionKeyframe action = actionRecord[actionIndex];
                 if(action.type == 0) {
                     if(action.interacted.tag == "Wanderer") {
                         NPCMovement npc = action.interacted.GetComponent<NPCMovement>();
                         if(npc.dead) {
+                            Debug.Log("NPC was already dead on loop " + ghostNum);
                             buildings.ResetToLoop(ghostNum);
                         } else {
                             npc.DoKill();
+                        }
+                    }
+                } else if(action.type == 1) {
+                    if(action.interacted.tag == "Door") {
+                        DoorScripts door = action.interacted.GetComponent<DoorScripts>();
+                        if(door.open) { //door was already open
+                            Debug.Log("Door was already open on loop " + ghostNum);
+                            buildings.ResetToLoop(ghostNum);
+                        } else {
+                            door.Toggle();
+                        }
+                    }
+                } else if(action.type == 2) {
+                    if(action.interacted.tag == "Door") {
+                        DoorScripts door = action.interacted.GetComponent<DoorScripts>();
+                        if(!door.open) { //door was already open
+                            Debug.Log("Door was already closed on loop " + ghostNum);
+                            buildings.ResetToLoop(ghostNum);
+                        } else {
+                            door.Toggle();
                         }
                     }
                 }

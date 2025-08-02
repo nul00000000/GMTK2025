@@ -6,16 +6,28 @@ using UnityEngine;
 public class DoorScripts : MonoBehaviour
 {
     // Start is called before the first frame update
-    private Boolean open = false;
+    [System.NonSerialized]
+    public Boolean open = false;
     private float lerpStart = -1;
     private Quaternion startRotation = Quaternion.identity; 
     public int openDirection = -1;
 
-    public void Toggle() {
+    //returns true if door is now open
+    public bool Toggle() {
         open = !open;
         lerpStart = Time.time;
         startRotation = transform.rotation;
         UpdateState();
+        return open;
+    }
+
+    public void ResetTo(bool toOpen) {
+        open = toOpen;
+        if (toOpen) {
+            transform.rotation = Quaternion.Euler(0, 90 * openDirection, 0);
+        } else {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     private void UpdateState() {

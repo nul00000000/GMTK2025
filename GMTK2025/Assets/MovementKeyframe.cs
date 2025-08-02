@@ -22,7 +22,7 @@ namespace TimeThings {
 
     public class ActionKeyframe {
 
-        //0: kill
+        //0: kill, 1: open door, 2: close door
         public float time;
         public int type;
         public GameObject interacted;

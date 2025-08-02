@@ -58,7 +58,7 @@ public class NPCMovement : MonoBehaviour
         }
     }
 
-    public void InitKeyframes(GameObject buildings) {
+    public void InitKeyframes(GameObject buildings, bool useInitialPositions = false) {
         // if(!seedSet) {
         //     UnityEngine.Random.InitState(seed);
         //     seedSet = true;
@@ -73,6 +73,12 @@ public class NPCMovement : MonoBehaviour
         float x = UnityEngine.Random.value * 100 - 50;
         float y = 0;
         float z = UnityEngine.Random.value * 100 - 50;
+
+        if(useInitialPositions) {
+            x = transform.position.x;
+            y = transform.position.y;
+            z = transform.position.z;
+        }
 
         bool inBuilding = true;
         Collider[] cols = buildings.GetComponentsInChildren<Collider>();

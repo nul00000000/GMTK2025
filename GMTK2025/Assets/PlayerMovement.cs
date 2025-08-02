@@ -163,8 +163,8 @@ public class PlayerMovement : MonoBehaviour {
         bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out doorHit, 10000, doorLayer);
         if (wasHit) {
             if (Input.GetKeyDown(KeyCode.E)) {
-                Debug.Log("Something should happen");
-                doorHit.collider.transform.root.gameObject.GetComponentInChildren<DoorScripts>().Toggle();
+                bool open = doorHit.collider.gameObject.GetComponent<DoorScripts>().Toggle();
+                actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, open ? 1 : 2, doorHit.collider.gameObject));
             }
         }
 // bandaid
@@ -172,13 +172,13 @@ public class PlayerMovement : MonoBehaviour {
         bool wasHit2 = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 10000);
 
         if (Input.GetMouseButtonDown(0)) {
-                fpsController.Shoot(hit);
+            fpsController.Shoot(hit);
 
-                if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer" && !hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().dead) {
-                    hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
-                    actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
-                    
-                }
+            if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer" && !hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().dead) {
+                hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
+                actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
+                
+            }
         }
     }
 
