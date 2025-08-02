@@ -52,7 +52,8 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   deathParticles: {fileID: 7018049475912752728, guid: a91f7c7afe0332c48a2d2b1998f2f628, type: 3}
   moveDistance: 2.5
-  animator: {fileID: 533503024986357051}
+  isTimeKeeper: 0
+  dead: 0
 --- !u!136 &3537927918620855674
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -98,7 +99,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112

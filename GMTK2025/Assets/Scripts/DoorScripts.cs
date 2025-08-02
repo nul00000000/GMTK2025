@@ -16,17 +16,18 @@ public class DoorScripts : MonoBehaviour
     public bool Toggle() {
         open = !open;
         lerpStart = Time.time;
-        startRotation = transform.rotation;
+        startRotation = transform.localRotation;
         UpdateState();
         return open;
     }
 
     public void ResetTo(bool toOpen) {
         open = toOpen;
+        lerpStart = Time.time - 100;
         if (toOpen) {
-            transform.rotation = Quaternion.Euler(0, 90 * openDirection, 0);
+            transform.localRotation = Quaternion.Euler(0, 90 * openDirection, 0);
         } else {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
@@ -47,9 +48,9 @@ public class DoorScripts : MonoBehaviour
         }
 
         if (open) {
-            transform.rotation = Quaternion.Lerp(startRotation, Quaternion.Euler(0, 90 * openDirection, 0), (Time.time - lerpStart) / .5f);
+            transform.localRotation = Quaternion.Lerp(startRotation, Quaternion.Euler(0, 90 * openDirection, 0), (Time.time - lerpStart) / .5f);
         } else {
-            transform.rotation = Quaternion.Lerp(startRotation, Quaternion.Euler(0, 0, 0), (Time.time - lerpStart) / .5f);
+            transform.localRotation = Quaternion.Lerp(startRotation, Quaternion.Euler(0, 0, 0), (Time.time - lerpStart) / .5f);
         }
     }
 }

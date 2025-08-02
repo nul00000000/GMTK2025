@@ -47,6 +47,11 @@ public class WorldController : MonoBehaviour {
             wanderers[i].dead = false;
         }
 
+        DoorScripts[] doors = FindObjectsOfType<DoorScripts>();
+        for(int i = 0; i < doors.Length; i++) {
+            doors[i].ResetTo(false);
+        }
+
     }
 
     public void ResetToLoop(int ghostNum) {

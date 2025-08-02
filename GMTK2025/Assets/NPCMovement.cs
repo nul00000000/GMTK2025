@@ -78,20 +78,20 @@ public class NPCMovement : MonoBehaviour
             x = transform.position.x;
             y = transform.position.y;
             z = transform.position.z;
-        }
+        } else {
+            bool inBuilding = true;
+            Collider[] cols = buildings.GetComponentsInChildren<Collider>();
 
-        bool inBuilding = true;
-        Collider[] cols = buildings.GetComponentsInChildren<Collider>();
-
-        while(inBuilding) {
-            inBuilding = false;
-            for(int i = 0; i < cols.Length; i++) {
-                if(cols[i].bounds.Contains(new Vector3(x, 1, z))) {
-                    inBuilding = true;
-                    x = UnityEngine.Random.value * 100 - 50;
-                    y = 0;
-                    z = UnityEngine.Random.value * 100 - 50;
-                    break;
+            while(inBuilding) {
+                inBuilding = false;
+                for(int i = 0; i < cols.Length; i++) {
+                    if(cols[i].bounds.Contains(new Vector3(x, 1, z))) {
+                        inBuilding = true;
+                        x = UnityEngine.Random.value * 100 - 50;
+                        y = 0;
+                        z = UnityEngine.Random.value * 100 - 50;
+                        break;
+                    }
                 }
             }
         }

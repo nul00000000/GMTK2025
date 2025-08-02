@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour {
 
         RaycastHit doorHit;
 
-        bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out doorHit, 10000, doorLayer);
+        bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out doorHit, 3, doorLayer);
         if (wasHit) {
             if (Input.GetKeyDown(KeyCode.E)) {
                 bool open = doorHit.collider.gameObject.GetComponent<DoorScripts>().Toggle();
