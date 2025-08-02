@@ -34,7 +34,7 @@ public class WorldController : MonoBehaviour {
         ghosts.Add(ghost);
         for(int i = 0; i < numGhosts; i++) {
             ghosts[i].record = new List<MovementKeyframe>(record);
-            ghost.actionRecord = new List<ActionKeyframe>(actionRecord);
+            ghosts[i].actionRecord = new List<ActionKeyframe>(actionRecord);
         }
         numGhosts++;
 
@@ -47,12 +47,15 @@ public class WorldController : MonoBehaviour {
 
     }
 
-    public void ResetToLoop(int numLoop) {
+    public void ResetToLoop(int ghostNum) {
+        int numLoop = numGhosts - ghostNum - 1;
+
         Debug.Log("Resetting to loop " + numLoop);
 
         float newTime = numLoop * loopLength;
 
-        startTime = Time.fixedTime - newTime;
+        float timeTime = Time.fixedTime;
+        startTime = timeTime - newTime;
 
         for(int i = numGhosts - 1; i >= numLoop; i--) {
             Destroy(ghosts[i].gameObject);
@@ -62,6 +65,16 @@ public class WorldController : MonoBehaviour {
         for(int i = 0; i < numGhosts; i++) {
         //i think this is good? test thouroughly
             ghosts[i].startTime = startTime + (i + 1) * loopLength;
+            ghosts[i].record = new List<MovementKeyframe>(player.record);
+            ghosts[i].actionRecord = new List<ActionKeyframe>(player.actionRecord);
+            ghosts[i].SetLastActionTime(newTime);
+        }
+
+        float t = Time.fixedTime;
+        for(int i = 0; i < numWanderers; i++) {
+            wanderers[i].startTime = t;
+            wanderers[i].gameObject.SetActive(true);
+            wanderers[i].dead = false;
         }
 
         //reset player pos

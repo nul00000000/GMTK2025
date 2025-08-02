@@ -48,6 +48,10 @@ public class PlayerMovement : MonoBehaviour {
 
         Vector3 pos = Vector3.Lerp(record[first].pos, record[second].pos, (timeFromStart - record[first].time) / (record[second].time - record[first].time));
 
+        controller.enabled = false;
+        controller.transform.position = pos;
+        controller.enabled = true;
+
         // Yaw rotates the body (left/right)
         Vector3 rot = transform.localEulerAngles;
         rot.y = Mathf.Lerp(record[first].rotY, record[second].rotY, (timeFromStart - record[first].time) / (record[second].time - record[first].time));
@@ -64,6 +68,12 @@ public class PlayerMovement : MonoBehaviour {
         for(int i = record.Count - 1; i >= 0; i--) {
             if(record[i].time > timeFromStart) {
                 record.RemoveAt(i);
+            }
+        }
+
+        for(int i = actionRecord.Count - 1; i >= 0; i--) {
+            if(actionRecord[i].time > timeFromStart) {
+                actionRecord.RemoveAt(i);
             }
         }
 

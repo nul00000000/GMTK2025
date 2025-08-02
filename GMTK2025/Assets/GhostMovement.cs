@@ -38,6 +38,10 @@ public class GhostMovement : MonoBehaviour {
         lastActionTime = 0;
     }
 
+    public void SetLastActionTime(float time) {
+        this.lastActionTime = time;
+    }
+
     // Update is called once per frame
     void Update() {
         if(started) {
@@ -80,6 +84,7 @@ public class GhostMovement : MonoBehaviour {
                 }
             }
             if(actionIndex != -1) {
+                Debug.Log("ACTION! from " + ghostNum);
                 ActionKeyframe action = actionRecord[actionIndex];
                 if(action.type == 0) {
                     if(action.interacted.tag == "Wanderer") {
