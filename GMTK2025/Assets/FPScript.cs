@@ -13,6 +13,8 @@ public class FPScript : MonoBehaviour
     [SerializeField] TrailRenderer trailRenderer;
     [SerializeField] Transform trailPoint;
 
+    public Transform playerTransform;
+
     Vector3 compassTarget = Vector3.zero;
     
     private bool watching = false;
@@ -36,13 +38,13 @@ public class FPScript : MonoBehaviour
     void Update()
     {   
 
-        Vector3 worldDir = compassTarget - transform.position;
+        Vector3 worldDir = compassTarget - playerTransform.position;
         worldDir = Vector3.ProjectOnPlane(worldDir, Vector3.up).normalized;
 
-        Vector3 playerFwd = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        Vector3 playerFwd = Vector3.ProjectOnPlane(playerTransform.forward, Vector3.up).normalized;
 
         float relAngle = Vector3.SignedAngle(playerFwd, worldDir, Vector3.up);
-        secondPinTransform.localRotation = Quaternion.Euler(relAngle + 90, 0, 0);
+        secondPinTransform.localEulerAngles = new Vector3(0, -80, -relAngle - 90);
 
         if (Input.GetKeyDown(KeyCode.Tab)) {
             if (!watching) {

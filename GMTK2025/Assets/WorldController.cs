@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 using TimeThings;
 
@@ -11,6 +12,8 @@ public class WorldController : MonoBehaviour {
     public GhostMovement ghostPrefab;
 
     public FPScript compass;
+    public TextMeshPro dayNumberText;
+    public Transform dayNightIndicator;
 
     public PlayerMovement player;
 
@@ -26,6 +29,7 @@ public class WorldController : MonoBehaviour {
     private int numGhosts;
 
     private float startTime;
+    private float lastLoopStartTime;
     private static int randomSeed = 123456789;
 
     private int currentTimekeeper = 0;
@@ -47,15 +51,17 @@ public class WorldController : MonoBehaviour {
         }
         numGhosts++;
 
-        float t = Time.fixedTime;
+        lastLoopStartTime = Time.fixedTime;
         for(int i = 0; i < numWanderers; i++) {
-            wanderers[i].DoReset(t);
+            wanderers[i].DoReset(lastLoopStartTime);
         }
 
         DoorScripts[] doors = FindObjectsOfType<DoorScripts>();
         for(int i = 0; i < doors.Length; i++) {
             doors[i].ResetTo(false);
         }
+
+        dayNumberText.text = "" + (numGhosts + 1);
 
     }
 
@@ -82,9 +88,9 @@ public class WorldController : MonoBehaviour {
             ghosts[i].SetLastActionTime(newTime);
         }
 
-        float t = Time.fixedTime;
+        lastLoopStartTime = Time.fixedTime;
         for(int i = 0; i < numWanderers; i++) {
-            wanderers[i].DoReset(t);
+            wanderers[i].DoReset(lastLoopStartTime);
         }
 
         for(int i = 0; i < timekeeperDeathLoops.Count; i++) {
@@ -94,6 +100,7 @@ public class WorldController : MonoBehaviour {
         }
 
         UpdateCurrentTimekeeper();
+        dayNumberText.text = "" + (numGhosts + 1);
 
         //reset player pos
         player.SetToTime(newTime, startTime);
@@ -149,6 +156,7 @@ public class WorldController : MonoBehaviour {
                 c++;
             }
         }
+        dayNumberText.text = "" + (numGhosts + 1);
     }
 
     void Update() {
@@ -156,5 +164,6 @@ public class WorldController : MonoBehaviour {
             SetupLoop(player.record, player.actionRecord);
         }
         compass.setCompassTarget(wanderers[timekeeperIndices[currentTimekeeper]].transform.position);
+        dayNightIndicator.localEulerAngles = new Vector3((Time.fixedTime - lastLoopStartTime) / loopLength * 360.0f, 10, 0);
     }
 }
