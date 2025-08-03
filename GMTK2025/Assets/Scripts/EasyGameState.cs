@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EasyGameState : MonoBehaviour
@@ -8,6 +9,12 @@ public class EasyGameState : MonoBehaviour
     // Start is called before the first frame update
     public static Boolean gamePaused = false;
     private static Boolean prefsInitialized = false;
+    
+    public static Boolean gameLost = false;
+    public static float gameLostStart = -1;
+    public static int resumeGhostNum = -1;
+    public static Vector3 loseCameraPan = Vector3.zero;
+
     private static float musicVolume = -1;
     private static float volume = -1;
     private static float sensitivity = -1;
@@ -23,7 +30,13 @@ public class EasyGameState : MonoBehaviour
         prefsInitialized = true;
     }
     
-    
+    public static void DoGameLost(int ghostNum, Vector3 cameraObj) {
+        loseCameraPan = cameraObj;
+        resumeGhostNum = ghostNum;
+        gameLostStart = Time.time;
+        gameLost = true;
+    }
+     
     public static float getPrefVolume() {
         if (!prefsInitialized) initializePrefs();
         return volume;
@@ -51,6 +64,7 @@ public class EasyGameState : MonoBehaviour
 
     public static void setPrefSensitivity(float val) {
         sensitivity = val;
+        PlayerPrefs.SetFloat("Sensitivity", val);
     }
 
     void Start()

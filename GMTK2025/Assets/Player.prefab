@@ -2155,6 +2155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 3577903319582780642}
   fpsController: {fileID: 3954277508226245369}
+  buildings: {fileID: 0}
   controller: {fileID: 2906543240104641977}
   cameraTransform: {fileID: 5629023500866888961}
   maxPitch: 90

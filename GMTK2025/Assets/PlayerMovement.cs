@@ -119,7 +119,10 @@ public class PlayerMovement : MonoBehaviour {
                 pauseMenu.SetActive(false);
             }
         }
-        if(!paused) {
+
+        
+
+        if(!paused && !EasyGameState.gameLost) {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 

@@ -9,15 +9,24 @@ public class FPScript : MonoBehaviour
 {
     [SerializeField] Animator armAnimator;
     [SerializeField] Animator gunAnimator;
+
     [SerializeField] Transform secondPinTransform;
     [SerializeField] TrailRenderer trailRenderer;
     [SerializeField] Transform trailPoint;
+    [SerializeField] Camera siblingCamera;
 
+
+    [SerializeField] GameObject armature;
+
+    [SerializeField] GameObject gun;
+    private bool armatureGone = false;
+    [SerializeField] GameObject deathEffect;
     public Transform playerTransform;
-
+    private Vector3 basePosition = new Vector3(-.03f, .061f, .106f);
     Vector3 compassTarget = Vector3.zero;
     
     private bool watching = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +35,30 @@ public class FPScript : MonoBehaviour
 
     public void setCompassTarget(Vector3 val) {
         compassTarget = val;
+    }
+
+    public void DoLoseAnimation() {
+        armAnimator.Play("EXPLODE");
+    }
+
+    public void DoLoseExplosion() {
+        if (armatureGone) return;
+
+        armatureGone = true;
+        armature.SetActive(false);
+        gun.SetActive(false);
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        
+    }
+
+    public void resetToGamePlay() {
+        armature.SetActive(true);
+        gun.SetActive(true);
+        armAnimator.Play("Idle");
+        armatureGone = false;
+        siblingCamera.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        siblingCamera.transform.localPosition = basePosition;
+        
     }
     // Update is called once per frame
 
@@ -37,7 +70,7 @@ public class FPScript : MonoBehaviour
     }
     void Update()
     {   
-
+        
         Vector3 worldDir = compassTarget - playerTransform.position;
         worldDir = Vector3.ProjectOnPlane(worldDir, Vector3.up).normalized;
 
