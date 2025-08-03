@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour {
     public CharacterController controller;
     public Transform cameraTransform;
 
+    public GameObject indicator;
+
     public float maxPitch = 90.0f;
 
     public float mouseSensitivity = 5;
@@ -44,6 +46,8 @@ public class PlayerMovement : MonoBehaviour {
 
     Quaternion baseRotation;
     public LayerMask doorLayer;
+
+    private bool shouldShowIndicator = false;
 
     public void SetToTime(float timeFromStart, float newStartTime) {
         int first = record.Count - 2;
@@ -88,6 +92,22 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         startTime = newStartTime;
+    }
+
+    public void SetIndicatorEnabled(bool enabled) {
+        if(enabled) {
+            shouldShowIndicator = true;
+        }
+    }
+
+    public void SetIndicatorPointTowards(Vector3 pos) {
+        Vector3 worldDir = pos - transform.position;
+        worldDir = Vector3.ProjectOnPlane(worldDir, Vector3.up).normalized;
+
+        Vector3 playerFwd = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+
+        float relAngle = Vector3.SignedAngle(playerFwd, worldDir, Vector3.up);
+        indicator.transform.localEulerAngles = new Vector3(0, 0, -relAngle);
     }
 
     void Start() {
@@ -220,5 +240,10 @@ public class PlayerMovement : MonoBehaviour {
     //         Debug.Log("Not Grounded!");
     //     }
     // }
+
+    void LateUpdate() {
+        indicator.transform.parent.gameObject.SetActive(shouldShowIndicator);
+        shouldShowIndicator = false;
+    }
 
 }
