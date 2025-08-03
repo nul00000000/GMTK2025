@@ -29,7 +29,10 @@ public class MusicScript : MonoBehaviour {
     }
 
     void Start() {
-        
+        luteSource.volume = 1.0f * EasyGameState.getPrefMusicVolume();
+        electricSource.volume = 0;
+        recorderSource.volume = 0;
+        altoSource.volume = 0;
     }
 
     public void SeekStart() {

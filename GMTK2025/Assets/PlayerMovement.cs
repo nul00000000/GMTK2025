@@ -12,6 +12,10 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject startScreen;
     [SerializeField] TMP_Text caughtText;
+    [SerializeField] TMP_Text openDoorText;
+    [SerializeField] TMP_Text closedDoorText;
+    [SerializeField] TMP_Text stoleKillText;
+    [SerializeField] TMP_Text gotSeenText;
     [SerializeField] AudioSource shootSound;
     [SerializeField] AudioSource clickSound;
 
@@ -54,7 +58,7 @@ public class PlayerMovement : MonoBehaviour {
         clickSound.volume = 1 * EasyGameState.getPrefVolume();
         clickSound.Play();
     }
-    public void SetToTime(float timeFromStart, float newStartTime) {
+    public void SetToTime(float timeFromStart, float newStartTime, int causeType) {
         int first = record.Count - 2;
         int second = record.Count - 1;
         for(int i = 1; i < record.Count; i++) {
@@ -97,6 +101,16 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         startTime = newStartTime;
+
+        if(causeType == 0) {
+            StartCoroutine(gameText(stoleKillText));
+        } else if(causeType == 1) {
+            StartCoroutine(gameText(openDoorText));
+        } else if(causeType == 2) {
+            StartCoroutine(gameText(closedDoorText));
+        } else {
+            StartCoroutine(gameText(gotSeenText));
+        }
     }
 
     public void SetIndicatorEnabled(bool enabled) {

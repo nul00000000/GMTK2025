@@ -5,6 +5,7 @@ using TMPro;
 
 using TimeThings;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class WorldController : MonoBehaviour {
 
@@ -17,6 +18,8 @@ public class WorldController : MonoBehaviour {
     public Transform dayNightIndicator;
 
     public PlayerMovement player;
+
+    public Transform directionalLightTransform;
 
     [SerializeField] MusicScript musicController;
     public int numWanderers = 10;
@@ -73,7 +76,7 @@ public class WorldController : MonoBehaviour {
         player.playClick();
     }
 
-    public void ResetToLoop(int ghostNum) {
+    public void ResetToLoop(int ghostNum, int causeType) {
         int numLoop = numGhosts - ghostNum - 1;
 
         Debug.Log("Resetting to loop " + numLoop);
@@ -111,11 +114,15 @@ public class WorldController : MonoBehaviour {
         dayNumberText.text = "" + (numGhosts + 1);
 
         //reset player pos
-        player.SetToTime(newTime, startTime);
+        player.SetToTime(newTime, startTime, causeType);
     }
 
     public void RegisterTimekeeperKill(int timekeeperNum) {
         timekeeperDeathLoops[timekeeperNum] = numGhosts;
+        if(timekeeperNum == timekeeperDeathLoops.Count - 1) {
+            //last timekeeper has been killed
+            SceneManager.LoadScene("Win");
+        }
         UpdateCurrentTimekeeper();
     }
 
@@ -201,7 +208,7 @@ public class WorldController : MonoBehaviour {
                     EasyGameState.gameLost = false;
                     startTime = Time.time;
                     firstPerson.resetToGamePlay();
-                    ResetToLoop(EasyGameState.resumeGhostNum);
+                    ResetToLoop(EasyGameState.resumeGhostNum, EasyGameState.resumeGhostCause);
                     musicController.SeekStart();
                 }
             }
@@ -236,5 +243,9 @@ public class WorldController : MonoBehaviour {
             musicController.setRecorder(true);
             musicController.setAlto(true);
         }
+
+        float coef = (Time.fixedTime - lastLoopStartTime) / loopLength;
+        float angle = 360f * coef - (360 * (int) coef);
+        directionalLightTransform.localRotation = Quaternion.Euler(angle + 50, 0, 0);
     }
 }

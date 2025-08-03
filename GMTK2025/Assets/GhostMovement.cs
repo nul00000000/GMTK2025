@@ -126,7 +126,7 @@ public class GhostMovement : MonoBehaviour {
                         if(npc.dead) {
                             Debug.Log("NPC was already dead on loop " + ghostNum);
                             // buildings.ResetToLoop(ghostNum);
-                            EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+                            EasyGameState.DoGameLost(ghostNum, 0, lostCameraPosition);
                         } else {
                             npc.DoKill();
                             Shoot(npc.transform.position + new Vector3(0, 1.5f, 0));
@@ -138,7 +138,7 @@ public class GhostMovement : MonoBehaviour {
                         if(door.open) { //door was already open
                             Debug.Log("Door was already open on loop " + ghostNum);
                             // buildings.ResetToLoop(ghostNum);
-                            EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+                            EasyGameState.DoGameLost(ghostNum, 1, lostCameraPosition);
                         } else {
                             door.Toggle();
                         }
@@ -148,7 +148,7 @@ public class GhostMovement : MonoBehaviour {
                         DoorScripts door = action.interacted.GetComponent<DoorScripts>();
                         if(!door.open) { //door was already open
                             Debug.Log("Door was already closed on loop " + ghostNum);
-                            EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+                            EasyGameState.DoGameLost(ghostNum, 2, lostCameraPosition);
             
                             // buildings.ResetToLoop(ghostNum);
                         } else {
@@ -160,7 +160,7 @@ public class GhostMovement : MonoBehaviour {
             if(didHit) {
                 Debug.Log("witawawy clipping rn");
                 // buildings.ResetToLoop(ghostNum);
-                EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+                EasyGameState.DoGameLost(ghostNum, -1, lostCameraPosition);
             }
             //check if player is visible
             bool seen = false;
@@ -181,7 +181,7 @@ public class GhostMovement : MonoBehaviour {
                 shrillAudio.Play();
                 
             } else if(seen && Time.fixedTime > playerSeenSince + 1.5) {
-                EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+                EasyGameState.DoGameLost(ghostNum, 3, lostCameraPosition);
             }
             player.gameObject.GetComponent<PlayerMovement>().SetIndicatorEnabled(seen);
             player.gameObject.GetComponent<PlayerMovement>().SetIndicatorPointTowards(transform.position);

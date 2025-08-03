@@ -13,6 +13,7 @@ public class EasyGameState : MonoBehaviour
     public static Boolean gameLost = false;
     public static float gameLostStart = -1;
     public static int resumeGhostNum = -1;
+    public static int resumeGhostCause = -1;
     public static Vector3 loseCameraPan = Vector3.zero;
 
     private static float musicVolume = -1;
@@ -30,9 +31,10 @@ public class EasyGameState : MonoBehaviour
         prefsInitialized = true;
     }
     
-    public static void DoGameLost(int ghostNum, Vector3 cameraObj) {
+    public static void DoGameLost(int ghostNum, int causeType, Vector3 cameraObj) {
         loseCameraPan = cameraObj;
         resumeGhostNum = ghostNum;
+        resumeGhostCause = causeType;
         gameLostStart = Time.time;
         gameLost = true;
     }
