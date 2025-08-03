@@ -16,11 +16,11 @@ public class SettingsUiScript : MonoBehaviour
     [SerializeField] TMP_InputField sensitivityInput;
 
     public void onVolumeValueChanged(float val) {
-        
+        EasyGameState.setPrefVolume(volumeSlider.value);
     }
 
     public void onMusicVolumeValueChanged(float val) {
-
+        EasyGameState.setPrefMusicVolume(musicSlider.value);
     }
 
     private void setSens(float val) {

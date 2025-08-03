@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 
 using TimeThings;
+using Unity.VisualScripting;
 
 public class WorldController : MonoBehaviour {
 
@@ -17,6 +18,7 @@ public class WorldController : MonoBehaviour {
 
     public PlayerMovement player;
 
+    [SerializeField] MusicScript musicController;
     public int numWanderers = 10;
 
     public float loopLength = 60 * 4;
@@ -190,6 +192,7 @@ public class WorldController : MonoBehaviour {
                     startTime = Time.time;
                     firstPerson.resetToGamePlay();
                     ResetToLoop(EasyGameState.resumeGhostNum);
+                    musicController.SeekStart();
                 }
             }
 
@@ -201,5 +204,12 @@ public class WorldController : MonoBehaviour {
         }
         compass.setCompassTarget(wanderers[timekeeperIndices[currentTimekeeper]].transform.position);
         dayNightIndicator.localEulerAngles = new Vector3((Time.fixedTime - lastLoopStartTime) / loopLength * 360.0f, 10, 0);
+
+        if (currentTimekeeper < 2) {
+            musicController.setLute(true);
+            musicController.setElectric(true);
+            musicController.setRecorder(false);
+
+        }
     }
 }

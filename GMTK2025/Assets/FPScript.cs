@@ -58,7 +58,6 @@ public class FPScript : MonoBehaviour
         armatureGone = false;
         siblingCamera.transform.localRotation = Quaternion.Euler(0, 0, 0);
         siblingCamera.transform.localPosition = basePosition;
-        
     }
     // Update is called once per frame
 
