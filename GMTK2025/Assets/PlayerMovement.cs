@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject startScreen;
     [SerializeField] TMP_Text caughtText;
+    [SerializeField] AudioSource shootSound;
 
     [SerializeField] FPScript fpsController;
     public WorldController buildings;
@@ -196,6 +197,8 @@ public class PlayerMovement : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0) && !fpsController.watching) {
             fpsController.Shoot(hit);
+            shootSound.volume = 1 * EasyGameState.getPrefVolume();
+            shootSound.Play();
 
             if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer" && !hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().dead) {
                 hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();

@@ -6,6 +6,8 @@ public class MusicScript : MonoBehaviour {
     [SerializeField] AudioSource luteSource;
     [SerializeField] AudioSource electricSource;
     [SerializeField] AudioSource recorderSource;
+    [SerializeField] AudioSource altoSource;
+
     private Dictionary<string, bool> playState = new Dictionary<string, bool>();
 
     // Start is called before the first frame update
@@ -20,6 +22,10 @@ public class MusicScript : MonoBehaviour {
 
     public void setRecorder(bool val) {
         playState["Recorder"] = val;
+    }
+
+    public void setAlto(bool val) {
+        playState["Alto"] = val;
     }
 
     void Start() {
@@ -43,17 +49,21 @@ public class MusicScript : MonoBehaviour {
             luteSource.Pause();
             electricSource.Pause();
             recorderSource.Pause();
+            altoSource.Pause();
 
             return;
         } else {
             luteSource.UnPause();
             electricSource.UnPause();
             recorderSource.UnPause();
+            altoSource.UnPause();
+
         }
 
-        Debug.Log(EasyGameState.getPrefMusicVolume());
+        // Debug.Log(EasyGameState.getPrefMusicVolume());
         luteSource.volume = playState["Lute"] ? 1.0f * EasyGameState.getPrefMusicVolume() : 0.0f;
         electricSource.volume = playState["Electric"] ? 1.0f * EasyGameState.getPrefMusicVolume() : 0.0f;
         recorderSource.volume = playState["Recorder"] ? 1.0f * EasyGameState.getPrefMusicVolume() : 0.0f;
+        altoSource.volume = playState["Alto"] ? 1.0f * EasyGameState.getPrefMusicVolume() : 0.0f;
     }
 }

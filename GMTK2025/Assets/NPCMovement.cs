@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 
 public class NPCMovement : MonoBehaviour
 {
+    [SerializeField]
     public Rigidbody player;
     public Collider body;
     public Transform cameraTransform;

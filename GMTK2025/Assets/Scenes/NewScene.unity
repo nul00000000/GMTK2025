@@ -1450,7 +1450,7 @@ MonoBehaviour:
   player: {fileID: 1493962466}
   musicController: {fileID: 477727761}
   numWanderers: 10
-  loopLength: 10
+  loopLength: 90
   ghosts: []
   wanderers:
   - {fileID: 1303780434}

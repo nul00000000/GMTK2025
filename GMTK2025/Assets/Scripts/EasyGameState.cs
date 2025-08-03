@@ -18,7 +18,7 @@ public class EasyGameState : MonoBehaviour
     private static float musicVolume = -1;
     private static float volume = -1;
     private static float sensitivity = -1;
-    const float DEFAULT_VOLUME = .5f;
+    const float DEFAULT_VOLUME = .2f;
     
     const float DEFAULT_SENSITIVITY = 1;
 

@@ -65,7 +65,7 @@ public class WorldController : MonoBehaviour {
         }
 
         dayNumberText.text = "" + (numGhosts + 1);
-
+        musicController.SeekStart();
     }
 
     public void ResetToLoop(int ghostNum) {
@@ -208,9 +208,24 @@ public class WorldController : MonoBehaviour {
 
         if (currentTimekeeper < 2) {
             musicController.setLute(true);
+            musicController.setElectric(false);
+            musicController.setRecorder(false);
+            musicController.setAlto(false);
+        } else if (currentTimekeeper < 4) {
+            musicController.setLute(true);
             musicController.setElectric(true);
             musicController.setRecorder(false);
-
+            musicController.setAlto(false);
+        } else if (currentTimekeeper < 7) {
+            musicController.setLute(true);
+            musicController.setElectric(true);
+            musicController.setRecorder(true);
+            musicController.setAlto(false);
+        } else if (currentTimekeeper >= 7) {
+            musicController.setLute(true);
+            musicController.setElectric(true);
+            musicController.setRecorder(true);
+            musicController.setAlto(true);
         }
     }
 }
