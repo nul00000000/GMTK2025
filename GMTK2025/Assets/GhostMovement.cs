@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TimeThings;
+using Unity.VisualScripting;
 
 public class GhostMovement : MonoBehaviour {
 
@@ -69,7 +70,7 @@ public class GhostMovement : MonoBehaviour {
     }
 
     void Update() {
-        if(started) {
+        if(started && !EasyGameState.gameLost) {
             //movement
             float currentTime = Time.fixedTime - startTime;
             int first = record.Count - 2;
@@ -113,6 +114,10 @@ public class GhostMovement : MonoBehaviour {
                     break;
                 }
             }
+
+            Vector3 lostCameraPosition = player.transform.position + 1.2f * -player.transform.forward;
+            lostCameraPosition.y = player.transform.position.y + 2.2f;
+
             if(actionIndex != -1) {
                 ActionKeyframe action = actionRecord[actionIndex];
                 if(action.type == 0) {
@@ -120,7 +125,8 @@ public class GhostMovement : MonoBehaviour {
                         NPCMovement npc = action.interacted.GetComponent<NPCMovement>();
                         if(npc.dead) {
                             Debug.Log("NPC was already dead on loop " + ghostNum);
-                            buildings.ResetToLoop(ghostNum);
+                            // buildings.ResetToLoop(ghostNum);
+                            EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
                         } else {
                             npc.DoKill();
                             Shoot(npc.transform.position + new Vector3(0, 1.5f, 0));
@@ -131,7 +137,8 @@ public class GhostMovement : MonoBehaviour {
                         DoorScripts door = action.interacted.GetComponent<DoorScripts>();
                         if(door.open) { //door was already open
                             Debug.Log("Door was already open on loop " + ghostNum);
-                            buildings.ResetToLoop(ghostNum);
+                            // buildings.ResetToLoop(ghostNum);
+                            EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
                         } else {
                             door.Toggle();
                         }
@@ -141,7 +148,9 @@ public class GhostMovement : MonoBehaviour {
                         DoorScripts door = action.interacted.GetComponent<DoorScripts>();
                         if(!door.open) { //door was already open
                             Debug.Log("Door was already closed on loop " + ghostNum);
-                            buildings.ResetToLoop(ghostNum);
+                            EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+            
+                            // buildings.ResetToLoop(ghostNum);
                         } else {
                             door.Toggle();
                         }

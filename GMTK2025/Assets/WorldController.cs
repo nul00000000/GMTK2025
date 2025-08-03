@@ -161,6 +161,42 @@ public class WorldController : MonoBehaviour {
     }
 
     void Update() {
+        if (EasyGameState.gameLost || EasyGameState.gamePaused) {
+            if (EasyGameState.gameLost) {
+                FPScript firstPerson = player.GetComponentInChildren<FPScript>();
+                
+                if (firstPerson != null) { 
+                    firstPerson.DoLoseAnimation();
+
+                    if (Time.time - EasyGameState.gameLostStart >= 2.11) {
+                        player.GetComponentInChildren<FPScript>().DoLoseExplosion();
+                    }
+                }
+                
+                float timeSinceFour = Time.time - EasyGameState.gameLostStart - 4.11f;
+                Camera camera = player.GetComponentInChildren<Camera>();
+                if (Time.time - EasyGameState.gameLostStart >= 4.11) {
+
+
+                    if (!(Time.time - EasyGameState.gameLostStart >= 6)) {
+                        camera.transform.position = Vector3.Lerp(camera.transform.position, EasyGameState.loseCameraPan, timeSinceFour / 4);
+                        Quaternion targetRot = ghosts[EasyGameState.resumeGhostNum].transform.rotation;
+                        camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, targetRot, timeSinceFour / 4);
+                    }
+                    
+                }
+
+                if (Time.time - EasyGameState.gameLostStart >= 8) {
+                    EasyGameState.gameLost = false;
+                    startTime = Time.time;
+                    firstPerson.resetToGamePlay();
+                    ResetToLoop(EasyGameState.resumeGhostNum);
+                }
+            }
+
+
+            return;
+        }
         if((Time.fixedTime - startTime) / loopLength > numGhosts + 1) {
             SetupLoop(player.record, player.actionRecord);
         }

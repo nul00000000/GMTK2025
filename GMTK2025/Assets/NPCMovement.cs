@@ -135,7 +135,7 @@ public class NPCMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if(started && !dead) {
+        if(started && !dead && !EasyGameState.gameLost) {
             float currentTime = Time.fixedTime - startTime;
             int first = record.Count - 2;
             int second = record.Count - 1;
