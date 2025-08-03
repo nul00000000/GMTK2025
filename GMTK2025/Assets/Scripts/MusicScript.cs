@@ -36,10 +36,12 @@ public class MusicScript : MonoBehaviour {
         luteSource.time = 0;
         electricSource.time = 0;
         recorderSource.time = 0;
+        altoSource.time = 0;
         
         luteSource.Play();
         electricSource.Play();
         recorderSource.Play();
+        altoSource.Play();
     }
 
     // Update is called once per frame
