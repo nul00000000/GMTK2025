@@ -175,10 +175,11 @@ public class GhostMovement : MonoBehaviour {
             if(seen && !lastPlayerSeen) {
                 playerSeenSince = Time.fixedTime;
                 Debug.Log("Player entered vision of ghost " + ghostNum);
-            } else if(seen && Time.fixedTime > playerSeenSince + 1) {
+            } else if(seen && Time.fixedTime > playerSeenSince + 2) {
                 EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
             }
-            player.SetIndicatorEnabled(seen);
+            player.gameObject.GetComponent<PlayerMovement>().SetIndicatorEnabled(seen);
+            player.gameObject.GetComponent<PlayerMovement>().SetIndicatorPointTowards(transform.position);
             lastPlayerSeen = seen;
         }
     }

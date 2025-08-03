@@ -94,7 +94,19 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public void SetIndicatorEnabled(bool enabled) {
-        indicator.SetEnabled(enabled);
+        if(enabled) {
+            shouldShowIndicator = true;
+        }
+    }
+
+    public void SetIndicatorPointTowards(Vector3 pos) {
+        Vector3 worldDir = pos - transform.position;
+        worldDir = Vector3.ProjectOnPlane(worldDir, Vector3.up).normalized;
+
+        Vector3 playerFwd = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+
+        float relAngle = Vector3.SignedAngle(playerFwd, worldDir, Vector3.up);
+        indicator.transform.localEulerAngles = new Vector3(0, 0, -relAngle);
     }
 
     void Start() {
@@ -227,7 +239,7 @@ public class PlayerMovement : MonoBehaviour {
     // }
 
     void LateUpdate() {
-        
+        indicator.transform.parent.gameObject.SetActive(shouldShowIndicator);
         shouldShowIndicator = false;
     }
 

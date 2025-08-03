@@ -2254,6 +2254,7 @@ MonoBehaviour:
   buildings: {fileID: 0}
   controller: {fileID: 5277472794116804738}
   cameraTransform: {fileID: 3419651768057983034}
+  indicator: {fileID: 2345889274727306074}
   maxPitch: 90
   mouseSensitivity: 5
   movementSpeed: 4
