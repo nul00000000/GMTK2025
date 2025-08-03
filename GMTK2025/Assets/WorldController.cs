@@ -43,6 +43,7 @@ public class WorldController : MonoBehaviour {
         GhostMovement ghost = (GhostMovement) Instantiate(ghostPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         ghost.buildings = this;
         ghost.ghostNum = numGhosts;
+        ghost.player = player.transform;
         ghost.record = new List<MovementKeyframe>(record);
         ghost.actionRecord = new List<ActionKeyframe>(actionRecord);
         ghost.StartReplay();

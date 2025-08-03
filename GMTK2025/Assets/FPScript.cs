@@ -25,7 +25,8 @@ public class FPScript : MonoBehaviour
     private Vector3 basePosition = new Vector3(-.03f, .061f, .106f);
     Vector3 compassTarget = Vector3.zero;
     
-    private bool watching = false;
+    [System.NonSerialized]
+    public bool watching = false;
 
     // Start is called before the first frame update
     void Start()
