@@ -225,7 +225,7 @@ public class PlayerMovement : MonoBehaviour {
 
         bool wasHit = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out doorHit, 3, doorLayer);
         if (wasHit) {
-            if (Input.GetKeyDown(KeyCode.E)) {
+            if (!paused && Input.GetKeyDown(KeyCode.E)) {
                 bool open = doorHit.collider.gameObject.GetComponent<DoorScripts>().Toggle();
                 actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, open ? 1 : 2, doorHit.collider.gameObject));
             }
@@ -234,7 +234,7 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit hit;
         bool wasHit2 = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 10000);
 
-        if (Input.GetMouseButtonDown(0) && !fpsController.watching) {
+        if (!paused && Input.GetMouseButtonDown(0) && !fpsController.watching) {
             fpsController.Shoot(hit);
             shootSound.volume = 1 * EasyGameState.getPrefVolume();
             shootSound.Play();

@@ -50,20 +50,21 @@ public class MusicScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (EasyGameState.gamePaused || EasyGameState.gameLost) {
-            luteSource.Pause();
-            electricSource.Pause();
-            recorderSource.Pause();
-            altoSource.Pause();
+        //six minute game about time we dont need to pause shit
+        // if (EasyGameState.gamePaused || EasyGameState.gameLost) {
+        //     luteSource.Pause();
+        //     electricSource.Pause();
+        //     recorderSource.Pause();
+        //     altoSource.Pause();
 
-            return;
-        } else {
-            luteSource.UnPause();
-            electricSource.UnPause();
-            recorderSource.UnPause();
-            altoSource.UnPause();
+        //     return;
+        // } else {
+        //     luteSource.UnPause();
+        //     electricSource.UnPause();
+        //     recorderSource.UnPause();
+        //     altoSource.UnPause();
 
-        }
+        // }
 
         // Debug.Log(EasyGameState.getPrefMusicVolume());
         luteSource.volume = playState["Lute"] ? 1.0f * EasyGameState.getPrefMusicVolume() : 0.0f;
