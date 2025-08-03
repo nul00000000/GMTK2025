@@ -262,6 +262,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 3790891172505245990}
   cameraTransform: {fileID: 9119216884740131578}
+  animator: {fileID: 1014906862234783756}
+  gunTip: {fileID: 2435262946631427218}
+  trail: {fileID: -2457358818194773451, guid: f3ba9cf34f4593e4e9466fbb44642e73, type: 3}
   maxPitch: 90
   mouseSensitivity: 5
   movementSpeed: 5
@@ -350,8 +353,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03d4c62c58ae0954f8458b8856781da6, type: 3}
+--- !u!95 &1014906862234783756 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4874405900706270014, guid: 03d4c62c58ae0954f8458b8856781da6, type: 3}
+  m_PrefabInstance: {fileID: 5598240687896533810}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1811103346631770154 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6094116706835503896, guid: 03d4c62c58ae0954f8458b8856781da6, type: 3}
+  m_PrefabInstance: {fileID: 5598240687896533810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2435262946631427218 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7816903708785328032, guid: 03d4c62c58ae0954f8458b8856781da6, type: 3}
   m_PrefabInstance: {fileID: 5598240687896533810}
   m_PrefabAsset: {fileID: 0}

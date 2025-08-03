@@ -8,6 +8,9 @@ public class GhostMovement : MonoBehaviour {
 
     public Rigidbody player;
     public Transform cameraTransform;
+    [SerializeField] Animator animator;
+    [SerializeField] Transform gunTip;
+    [SerializeField] TrailRenderer trail;
 
     public float maxPitch = 90.0f;
 
@@ -46,6 +49,32 @@ public class GhostMovement : MonoBehaviour {
     }
 
     // Update is called once per frame
+
+    private void Shoot() {
+        
+    }
+
+
+    public void Shoot(RaycastHit hit) {
+        
+        TrailRenderer renderer = Instantiate(trail, gunTip.position, Quaternion.identity);
+        StartCoroutine(SpawnTrail(renderer, hit));
+    }
+
+    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit) {
+        float time = 0;
+        Vector3 start = trail.transform.position;
+
+        while (time < 1) {
+            trail.transform.position = Vector3.Lerp(start, hit.point, time);
+
+            time += Time.deltaTime * 10;
+            yield return null;
+        }
+
+        Destroy(trail.gameObject);
+    }
+
     void Update() {
         if(started) {
             //movement
@@ -83,6 +112,12 @@ public class GhostMovement : MonoBehaviour {
             }
 
             player.MovePosition(pos);
+            Vector3 posDiff = record[first].pos - record[second].pos;
+            if (Mathf.Abs(posDiff.magnitude) > .01) {
+                animator.Play("Run");
+            } else {
+                animator.Play("Idle");
+            }
 
             //actions
             int actionIndex = -1;
