@@ -66,6 +66,7 @@ public class WorldController : MonoBehaviour {
 
         dayNumberText.text = "" + (numGhosts + 1);
         musicController.SeekStart();
+        player.playClick();
     }
 
     public void ResetToLoop(int ghostNum) {

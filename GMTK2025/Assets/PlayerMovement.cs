@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] GameObject startScreen;
     [SerializeField] TMP_Text caughtText;
     [SerializeField] AudioSource shootSound;
+    [SerializeField] AudioSource clickSound;
 
     [SerializeField] FPScript fpsController;
     public WorldController buildings;
@@ -49,6 +50,10 @@ public class PlayerMovement : MonoBehaviour {
 
     private bool shouldShowIndicator = false;
 
+    public void playClick() {
+        clickSound.volume = 1 * EasyGameState.getPrefVolume();
+        clickSound.Play();
+    }
     public void SetToTime(float timeFromStart, float newStartTime) {
         int first = record.Count - 2;
         int second = record.Count - 1;
