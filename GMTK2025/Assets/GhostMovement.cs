@@ -6,18 +6,14 @@ using TimeThings;
 
 public class GhostMovement : MonoBehaviour {
 
-    public Rigidbody player;
+    public Rigidbody ghostBody;
     public Transform cameraTransform;
     [SerializeField] Animator animator;
     [SerializeField] Transform gunTip;
     [SerializeField] TrailRenderer trail;
 
-    public float maxPitch = 90.0f;
-
-    public float mouseSensitivity = 5;
-
-    public float movementSpeed = 5;
-    public float jumpForce = 20;
+    [System.NonSerialized]
+    public Transform player;
 
     private bool started = false;
     [System.NonSerialized]
@@ -32,9 +28,6 @@ public class GhostMovement : MonoBehaviour {
     public WorldController buildings;
     [System.NonSerialized]
     public int ghostNum;
-
-    [System.NonSerialized]
-    public List<int> timekeeperKills;
 
     private float lastActionTime;
 
@@ -55,18 +48,18 @@ public class GhostMovement : MonoBehaviour {
     }
 
 
-    public void Shoot(RaycastHit hit) {
+    public void Shoot(Vector3 hit) {
         
         TrailRenderer renderer = Instantiate(trail, gunTip.position, Quaternion.identity);
         StartCoroutine(SpawnTrail(renderer, hit));
     }
 
-    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit) {
+    private IEnumerator SpawnTrail(TrailRenderer trail, Vector3 hit) {
         float time = 0;
         Vector3 start = trail.transform.position;
 
         while (time < 1) {
-            trail.transform.position = Vector3.Lerp(start, hit.point, time);
+            trail.transform.position = Vector3.Lerp(start, hit, time);
 
             time += Time.deltaTime * 10;
             yield return null;
@@ -99,19 +92,11 @@ public class GhostMovement : MonoBehaviour {
             }
 
             // Yaw rotates the body (left/right)
-            Vector3 rot = player.transform.localEulerAngles;
+            Vector3 rot = ghostBody.transform.localEulerAngles;
             rot.y = Mathf.Lerp(record[first].rotY, record[second].rotY, (currentTime - record[first].time) / (record[second].time - record[first].time));
-            player.transform.localEulerAngles = rot;
+            ghostBody.transform.localEulerAngles = rot;
 
-            if (cameraTransform != null) {
-                Vector3 camEuler = cameraTransform.localEulerAngles;
-                camEuler.x = Mathf.Lerp(record[first].rotX, record[second].rotX, (currentTime - record[first].time) / (record[second].time - record[first].time));
-                camEuler.y = 0f;
-                camEuler.z = 0f;
-                cameraTransform.localEulerAngles = camEuler;
-            }
-
-            player.MovePosition(pos);
+            ghostBody.MovePosition(pos);
             Vector3 posDiff = record[first].pos - record[second].pos;
             if (Mathf.Abs(posDiff.magnitude) > .01) {
                 animator.Play("Run");
@@ -138,6 +123,7 @@ public class GhostMovement : MonoBehaviour {
                             buildings.ResetToLoop(ghostNum);
                         } else {
                             npc.DoKill();
+                            Shoot(npc.transform.position + new Vector3(0, 1.5f, 0));
                         }
                     }
                 } else if(action.type == 1) {
@@ -162,6 +148,36 @@ public class GhostMovement : MonoBehaviour {
                     }
                 }
             }
+            //check if player is visible
+            if(Vector3.Dot(Vector3.Normalize(player.position - pos), Quaternion.Euler(new Vector3(Mathf.Lerp(record[first].rotX, record[second].rotX, (currentTime - record[first].time) / (record[second].time - record[first].time)), 
+                    Mathf.Lerp(record[first].rotY, record[second].rotY, (currentTime - record[first].time) / (record[second].time - record[first].time)), 0)) * new Vector3(0, 0, 1)) > 0.5) {
+                RaycastHit playerSee;
+                bool canSeePlayer = Physics.Raycast(pos, Vector3.Normalize(player.position - pos), out playerSee);
+                float dist = Vector3.Distance(player.position, pos);
+                if(playerSee.distance > dist) {
+                    buildings.ResetToLoop(ghostNum);
+                }
+            }
+        }
+    }
+
+    void LateUpdate() {
+        float currentTime = Time.fixedTime - startTime;
+        int first = record.Count - 2;
+        int second = record.Count - 1;
+        for(int i = 1; i < record.Count; i++) {
+            if(record[i].time > currentTime) {
+                first = i - 1;
+                second = i;
+                break;
+            }
+        }
+        if (cameraTransform != null) {
+            Vector3 camEuler = cameraTransform.localEulerAngles;
+            camEuler.x = (-Mathf.Lerp(record[first].rotX, record[second].rotX, (currentTime - record[first].time) / (record[second].time - record[first].time))) + 10;
+            camEuler.y = 0f;
+            camEuler.z = 0f;
+            cameraTransform.localEulerAngles = camEuler;
         }
     }
 }
