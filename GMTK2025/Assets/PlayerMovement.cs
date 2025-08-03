@@ -5,11 +5,14 @@ using UnityEngine;
 using TimeThings;
 using Unity.VisualScripting;
 using System;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject startScreen;
+    [SerializeField] TMP_Text caughtText;
+
     [SerializeField] FPScript fpsController;
     public WorldController buildings;
     public CharacterController controller;
@@ -31,6 +34,7 @@ public class PlayerMovement : MonoBehaviour {
     private bool paused = true;
 
     private float startTime;
+    private bool initialTab = false;
 
     [System.NonSerialized]
     public List<MovementKeyframe> record;
@@ -102,6 +106,15 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     // Update is called once per frame
+
+    private IEnumerator gameText(TMP_Text obj) {
+        float startTime = Time.time;
+        while (Time.time - startTime < 8) {
+            obj.color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (Time.time - startTime) / 8);
+
+            yield return null;
+        }
+    }
     void Update() {
         mouseSensitivity = EasyGameState.getPrefSensitivity();
 
@@ -121,8 +134,10 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Tab)) {
+        if(Input.GetKeyDown(KeyCode.Tab) && !initialTab) {
+            initialTab = true;
             startScreen.SetActive(false);
+            StartCoroutine(gameText(caughtText));
         }
 
         if(!paused && !EasyGameState.gameLost) {

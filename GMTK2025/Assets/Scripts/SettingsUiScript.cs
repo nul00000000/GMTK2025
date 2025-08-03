@@ -14,7 +14,8 @@ public class SettingsUiScript : MonoBehaviour
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider sensitivitySlider;
     [SerializeField] TMP_InputField sensitivityInput;
-
+    [SerializeField] TMP_Text initialText;
+    
     public void onVolumeValueChanged(float val) {
         EasyGameState.setPrefVolume(volumeSlider.value);
     }
