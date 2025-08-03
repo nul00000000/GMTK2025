@@ -32,6 +32,9 @@ public class GhostMovement : MonoBehaviour {
 
     private float lastActionTime;
 
+    private bool lastPlayerSeen = false;
+    private float playerSeenSince = 0;
+
     public void StartReplay() {
         started = true;
         startTime = Time.fixedTime;
@@ -115,8 +118,8 @@ public class GhostMovement : MonoBehaviour {
                 }
             }
 
-            Vector3 lostCameraPosition = player.transform.position + 1.2f * -player.transform.forward;
-            lostCameraPosition.y = player.transform.position.y + 2.2f;
+            Vector3 lostCameraPosition = transform.position + 1.2f * -transform.forward;
+            lostCameraPosition.y = transform.position.y + 2.2f;
 
             if(actionIndex != -1) {
                 ActionKeyframe action = actionRecord[actionIndex];
@@ -158,15 +161,24 @@ public class GhostMovement : MonoBehaviour {
                 }
             }
             //check if player is visible
+            bool seen = false;
             if(Vector3.Dot(Vector3.Normalize(player.position - pos), Quaternion.Euler(new Vector3(Mathf.Lerp(record[first].rotX, record[second].rotX, (currentTime - record[first].time) / (record[second].time - record[first].time)), 
                     Mathf.Lerp(record[first].rotY, record[second].rotY, (currentTime - record[first].time) / (record[second].time - record[first].time)), 0)) * new Vector3(0, 0, 1)) > 0.5) {
                 RaycastHit playerSee;
                 bool canSeePlayer = Physics.Raycast(pos, Vector3.Normalize(player.position - pos), out playerSee);
                 float dist = Vector3.Distance(player.position, pos);
                 if(playerSee.distance > dist) {
-                    buildings.ResetToLoop(ghostNum);
+                    // buildings.ResetToLoop(ghostNum);
+                    seen = true;
                 }
             }
+            if(seen && !lastPlayerSeen) {
+                playerSeenSince = Time.fixedTime;
+                Debug.Log("Player entered vision of ghost " + ghostNum);
+            } else if(seen && Time.fixedTime > playerSeenSince + 1) {
+                EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+            }
+            lastPlayerSeen = seen;
         }
     }
 

@@ -9,6 +9,7 @@ using System;
 public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject startScreen;
     [SerializeField] FPScript fpsController;
     public WorldController buildings;
     public CharacterController controller;
@@ -120,7 +121,9 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
-        
+        if(Input.GetKeyDown(KeyCode.Tab)) {
+            startScreen.SetActive(false);
+        }
 
         if(!paused && !EasyGameState.gameLost) {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -176,7 +179,7 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit hit;
         bool wasHit2 = Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 10000);
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && !fpsController.watching) {
             fpsController.Shoot(hit);
 
             if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer" && !hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().dead) {
