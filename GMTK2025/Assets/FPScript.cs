@@ -77,7 +77,7 @@ public class FPScript : MonoBehaviour
         Vector3 playerFwd = Vector3.ProjectOnPlane(playerTransform.forward, Vector3.up).normalized;
 
         float relAngle = Vector3.SignedAngle(playerFwd, worldDir, Vector3.up);
-        secondPinTransform.localEulerAngles = new Vector3(0, -80, -relAngle - 90);
+        secondPinTransform.localEulerAngles = new Vector3(0, -80, -relAngle);
 
         if (Input.GetKeyDown(KeyCode.Tab)) {
             if (!watching) {

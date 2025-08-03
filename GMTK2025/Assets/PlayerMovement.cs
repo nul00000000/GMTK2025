@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour {
         Vector3 playerFwd = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
 
         float relAngle = Vector3.SignedAngle(playerFwd, worldDir, Vector3.up);
-        indicator.transform.localEulerAngles = new Vector3(0, 0, -relAngle);
+        indicator.transform.localEulerAngles = new Vector3(0, 0, -relAngle + 90);
     }
 
     void Start() {
@@ -199,7 +199,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if(record.Count == 0 || Time.fixedTime - startTime > record[record.Count - 1].time + 0.1) {
-            record.Add(new MovementKeyframe(Time.fixedTime - startTime, transform.position, pitch, yaw));
+            record.Add(new MovementKeyframe(Time.fixedTime - startTime, transform.position, pitch, yaw + 90));
         }
 
         RaycastHit doorHit;

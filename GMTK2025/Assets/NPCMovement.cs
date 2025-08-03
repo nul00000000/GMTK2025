@@ -45,7 +45,7 @@ public class NPCMovement : MonoBehaviour
 
                 RaycastHit hit;
                 // Debug.Log(body.bounds.center.ToString() + " " + body.bounds.extents.ToString() + " " + new Vector3(tx, 0, tz).ToString() + " " + moveDistance.ToString());
-                bool hitDetect = Physics.BoxCast(new Vector3(x, 1, z), body.bounds.extents, new Vector3(tx, 0, tz), out hit, Quaternion.identity, moveDistance);
+                bool hitDetect = Physics.BoxCast(new Vector3(x, Terrain.activeTerrain.SampleHeight(new Vector3(x, 0, z)), z), body.bounds.extents, new Vector3(tx, 0, tz), out hit, Quaternion.identity, moveDistance);
 
                 if(hitDetect) {
                     //do a rotation anyway
@@ -53,6 +53,7 @@ public class NPCMovement : MonoBehaviour
                 } else {
                     x += tx * moveDistance;
                     z += tz * moveDistance;
+                    y = Terrain.activeTerrain.SampleHeight(new Vector3(x, 0, z));
                 }
                 // rotY += UnityEngine.Random.value * 360 - 180;
             } else {
@@ -63,7 +64,7 @@ public class NPCMovement : MonoBehaviour
         }
     }
 
-    public void InitKeyframes(GameObject buildings, bool useInitialPositions = false) {
+    public void InitKeyframes(GameObject buildings, float cx, float cz, float w, float h, bool useInitialPositions = false) {
         // if(!seedSet) {
         //     UnityEngine.Random.InitState(seed);
         //     seedSet = true;
@@ -75,9 +76,9 @@ public class NPCMovement : MonoBehaviour
             InitRandomMovement(transform.position.x, transform.position.y, transform.position.z);
         }
 
-        float x = UnityEngine.Random.value * 100 - 50;
-        float y = 0;
-        float z = UnityEngine.Random.value * 100 - 50;
+        float x = UnityEngine.Random.value * w - w/2 + cx;
+        float z = UnityEngine.Random.value * h - h/2 + cz;
+        float y = Terrain.activeTerrain.SampleHeight(new Vector3(x, 0, z));
 
         if(useInitialPositions) {
             x = transform.position.x;
@@ -92,9 +93,9 @@ public class NPCMovement : MonoBehaviour
                 for(int i = 0; i < cols.Length; i++) {
                     if(cols[i].bounds.Contains(new Vector3(x, 1, z))) {
                         inBuilding = true;
-                        x = UnityEngine.Random.value * 100 - 50;
-                        y = 0;
-                        z = UnityEngine.Random.value * 100 - 50;
+                        x = UnityEngine.Random.value * w - w/2 + cx;
+                        z = UnityEngine.Random.value * h - h/2 + cz;
+                        y = Terrain.activeTerrain.SampleHeight(new Vector3(x, 0, z));
                         break;
                     }
                 }

@@ -89,11 +89,8 @@ public class GhostMovement : MonoBehaviour {
             Vector3 pos = Vector3.Lerp(record[first].pos, record[second].pos, (currentTime - record[first].time) / (record[second].time - record[first].time));
 
             //test if path is clear
-            bool didHit = Physics.CapsuleCast(pos + new Vector3(0, 0.5f, 0), pos + new Vector3(0, 1.5f, 0), 0.3f, Vector3.Normalize(record[second].pos - record[first].pos), Vector3.Distance(pos, record[second].pos));
-            if(didHit) {
-                Debug.Log("witawawy clipping rn");
-                buildings.ResetToLoop(ghostNum);
-            }
+            // bool didHit = Physics.CapsuleCast(pos + new Vector3(0, 0.5f, 0), pos + new Vector3(0, 1.5f, 0), 0.1f, Vector3.Normalize(record[second].pos - record[first].pos), Vector3.Distance(pos, record[second].pos));
+            bool didHit = false;
 
             // Yaw rotates the body (left/right)
             Vector3 rot = ghostBody.transform.localEulerAngles;
@@ -160,10 +157,15 @@ public class GhostMovement : MonoBehaviour {
                     }
                 }
             }
+            if(didHit) {
+                Debug.Log("witawawy clipping rn");
+                // buildings.ResetToLoop(ghostNum);
+                EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
+            }
             //check if player is visible
             bool seen = false;
             if(Vector3.Dot(Vector3.Normalize(player.position - pos), Quaternion.Euler(new Vector3(Mathf.Lerp(record[first].rotX, record[second].rotX, (currentTime - record[first].time) / (record[second].time - record[first].time)), 
-                    Mathf.Lerp(record[first].rotY, record[second].rotY, (currentTime - record[first].time) / (record[second].time - record[first].time)), 0)) * new Vector3(0, 0, 1)) > 0.5) {
+                    Mathf.Lerp(record[first].rotY, record[second].rotY, (currentTime - record[first].time) / (record[second].time - record[first].time)), 0)) * new Vector3(0, 0, 1)) > 0.4) {
                 RaycastHit playerSee;
                 bool canSeePlayer = Physics.Raycast(pos, Vector3.Normalize(player.position - pos), out playerSee);
                 float dist = Vector3.Distance(player.position, pos);
@@ -178,7 +180,7 @@ public class GhostMovement : MonoBehaviour {
                 shrillAudio.volume = 1.0f * EasyGameState.getPrefVolume();
                 shrillAudio.Play();
                 
-            } else if(seen && Time.fixedTime > playerSeenSince + 2) {
+            } else if(seen && Time.fixedTime > playerSeenSince + 1.5) {
                 EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
             }
             player.gameObject.GetComponent<PlayerMovement>().SetIndicatorEnabled(seen);
