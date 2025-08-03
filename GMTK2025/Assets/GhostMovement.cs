@@ -30,6 +30,9 @@ public class GhostMovement : MonoBehaviour {
     [System.NonSerialized]
     public int ghostNum;
 
+    [System.NonSerialized]
+    public List<int> timekeeperKills;
+
     private float lastActionTime;
 
     public void StartReplay() {

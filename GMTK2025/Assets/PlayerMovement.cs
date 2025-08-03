@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] GameObject pauseMenu;
     [SerializeField] FPScript fpsController;
+    public WorldController buildings;
     public CharacterController controller;
     public Transform cameraTransform;
 
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
 
     [System.NonSerialized]
     public List<MovementKeyframe> record;
+    [System.NonSerialized]
     public List<ActionKeyframe> actionRecord;
 
     Quaternion baseRotation;
@@ -177,7 +179,9 @@ public class PlayerMovement : MonoBehaviour {
             if(wasHit2 && hit.collider.transform.root.gameObject.tag == "Wanderer" && !hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().dead) {
                 hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().DoKill();
                 actionRecord.Add(new ActionKeyframe(Time.fixedTime - startTime, 0, hit.collider.transform.root.gameObject));
-                
+                if(hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().isTimeKeeper) {
+                    buildings.RegisterTimekeeperKill(hit.collider.transform.root.gameObject.GetComponent<NPCMovement>().timekeeperNum);
+                }
             }
         }
     }
