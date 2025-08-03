@@ -12385,6 +12385,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58cb74e21bc914e448d4afb1d14fdbef, type: 3}
   m_PrefabInstance: {fileID: 1106851217}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &453866041 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1809428556342542876, guid: 6761d909ff99c6e45a2e7a40e11cc7c5, type: 3}
+  m_PrefabInstance: {fileID: 1440880633}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &455483942 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 951d8035d17459d44ac5e4c7f4785388, type: 3}
@@ -52266,6 +52277,7 @@ MonoBehaviour:
   ghostPrefab: {fileID: 2043516824046544467, guid: c9173ecd7005aa149a9e5d0cd6e9f18a, type: 3}
   compass: {fileID: 1169072742}
   dayNumberText: {fileID: 1329158181}
+  numTimekeepersText: {fileID: 453866041}
   dayNightIndicator: {fileID: 77661085}
   player: {fileID: 1327013960}
   directionalLightTransform: {fileID: 1368751784}

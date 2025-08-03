@@ -15,6 +15,7 @@ public class WorldController : MonoBehaviour {
 
     public FPScript compass;
     public TextMeshPro dayNumberText;
+    public TMP_Text numTimekeepersText;
     public Transform dayNightIndicator;
 
     public PlayerMovement player;
@@ -117,12 +118,16 @@ public class WorldController : MonoBehaviour {
         player.SetToTime(newTime, startTime, causeType);
     }
 
+    private IEnumerator waitForIt(string scene) {
+        float startTime = Time.time;
+        while (Time.time - startTime < 3) {
+            yield return null;
+        }
+        SceneManager.LoadScene(scene);
+    }
+
     public void RegisterTimekeeperKill(int timekeeperNum) {
         timekeeperDeathLoops[timekeeperNum] = numGhosts;
-        if(timekeeperNum == timekeeperDeathLoops.Count - 1) {
-            //last timekeeper has been killed
-            SceneManager.LoadScene("Win");
-        }
         UpdateCurrentTimekeeper();
     }
 
@@ -130,9 +135,19 @@ public class WorldController : MonoBehaviour {
         for(int i = 0; i < timekeeperDeathLoops.Count; i++) {
             if(timekeeperDeathLoops[i] == -1) {
                 currentTimekeeper = i;
-                return;
+                break;
             }
         }
+        int numDead = 0;
+        for(int i = 0; i < timekeeperDeathLoops.Count; i++) {
+            if(timekeeperDeathLoops[i] != -1) {
+                numDead++;
+            }
+        }
+        if(numDead == timekeeperDeathLoops.Count - 1) {
+            StartCoroutine(waitForIt("Win"));
+        }
+        numTimekeepersText.text = numDead + "/10 Timekeepers";
     }
 
     void Start() {

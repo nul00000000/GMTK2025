@@ -29,6 +29,8 @@ public class MusicScript : MonoBehaviour {
     }
 
     void Start() {
+        DontDestroyOnLoad(gameObject);
+
         luteSource.volume = 1.0f * EasyGameState.getPrefMusicVolume();
         electricSource.volume = 0;
         recorderSource.volume = 0;

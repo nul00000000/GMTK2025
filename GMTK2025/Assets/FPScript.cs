@@ -79,15 +79,15 @@ public class FPScript : MonoBehaviour
         float relAngle = Vector3.SignedAngle(playerFwd, worldDir, Vector3.up);
         secondPinTransform.localEulerAngles = new Vector3(0, -80, -relAngle);
 
-        if (Input.GetKeyDown(KeyCode.Tab)) {
-            if (!watching) {
-                armAnimator.Play("Look");
-                watching = true;
-            } else {
-                armAnimator.Play("Unlook");
-                watching = false;
-            }
+        bool tabbing = Input.GetKey(KeyCode.Tab);
+        if (tabbing && !watching) {
+            armAnimator.Play("Look");
+            watching = true;
+        } else if(!tabbing && watching) {
+            armAnimator.Play("Unlook");
+            watching = false;
         }
+        watching = tabbing;
     }
 
     private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit) {
