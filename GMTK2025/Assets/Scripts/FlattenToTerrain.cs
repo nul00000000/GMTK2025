@@ -6,9 +6,12 @@ public class FlattenToTerrain : MonoBehaviour
 {
     public Terrain terrain;
     public MeshFilter meshFilter;
+    public MeshCollider collider;
 
     void Start()
     {
+        if (terrain == null) terrain = Terrain.activeTerrain;
+
         if (terrain == null || meshFilter == null)
         {
             Debug.LogError("Terrain or MeshFilter not assigned!");
@@ -40,5 +43,6 @@ public class FlattenToTerrain : MonoBehaviour
         mesh.vertices = vertices;
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
+        collider.sharedMesh = mesh;
     }
 }
