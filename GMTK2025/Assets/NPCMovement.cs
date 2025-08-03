@@ -28,6 +28,9 @@ public class NPCMovement : MonoBehaviour
 
     public bool isTimeKeeper = false;
     public bool dead = false;
+
+    [System.NonSerialized]
+    public int timekeeperNum;
     
     public void InitRandomMovement(float x, float y, float z) {
         float rotY = UnityEngine.Random.value * 360;

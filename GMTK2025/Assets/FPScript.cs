@@ -24,7 +24,7 @@ public class FPScript : MonoBehaviour
 
     public void setCompassTarget(Vector3 val) {
         compassTarget = val;
-    } 
+    }
     // Update is called once per frame
 
     public void Shoot(RaycastHit hit) {

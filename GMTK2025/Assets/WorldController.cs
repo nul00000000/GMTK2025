@@ -10,6 +10,8 @@ public class WorldController : MonoBehaviour {
     public List<NPCMovement> availableWanderers;
     public GhostMovement ghostPrefab;
 
+    public FPScript compass;
+
     public PlayerMovement player;
 
     public int numWanderers = 10;
@@ -25,6 +27,11 @@ public class WorldController : MonoBehaviour {
 
     private float startTime;
     private static int randomSeed = 123456789;
+
+    private int currentTimekeeper = 0;
+
+    private List<int> timekeeperDeathLoops;
+    private List<int> timekeeperIndices;
 
     public void SetupLoop(List<MovementKeyframe> record, List<ActionKeyframe> actionRecord) {
         GhostMovement ghost = (GhostMovement) Instantiate(ghostPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -80,11 +87,36 @@ public class WorldController : MonoBehaviour {
             wanderers[i].DoReset(t);
         }
 
+        for(int i = 0; i < timekeeperDeathLoops.Count; i++) {
+            if(timekeeperDeathLoops[i] >= numLoop) {
+                timekeeperDeathLoops[i] = -1;
+            }
+        }
+
+        UpdateCurrentTimekeeper();
+
         //reset player pos
         player.SetToTime(newTime, startTime);
     }
 
+    public void RegisterTimekeeperKill(int timekeeperNum) {
+        timekeeperDeathLoops[timekeeperNum] = numGhosts;
+        UpdateCurrentTimekeeper();
+    }
+
+    private void UpdateCurrentTimekeeper() {
+        for(int i = 0; i < timekeeperDeathLoops.Count; i++) {
+            if(timekeeperDeathLoops[i] == -1) {
+                currentTimekeeper = i;
+                return;
+            }
+        }
+    }
+
     void Start() {
+        timekeeperDeathLoops = new List<int>();
+        timekeeperIndices = new List<int>();
+
         if(generateRandomNPCs) {
             Random.InitState(randomSeed);
 
@@ -107,11 +139,22 @@ public class WorldController : MonoBehaviour {
                 wanderers[i].InitKeyframes(this.gameObject, true);
             }
         }
+
+        int c = 0;
+        for(int i = 0; i < numWanderers; i++) {
+            if(wanderers[i].isTimeKeeper) {
+                timekeeperDeathLoops.Add(-1);
+                timekeeperIndices.Add(i);
+                wanderers[i].timekeeperNum = c;
+                c++;
+            }
+        }
     }
 
     void Update() {
         if((Time.fixedTime - startTime) / loopLength > numGhosts + 1) {
             SetupLoop(player.record, player.actionRecord);
         }
+        compass.setCompassTarget(wanderers[timekeeperIndices[currentTimekeeper]].transform.position);
     }
 }
