@@ -13,6 +13,7 @@ public class NPCMovement : MonoBehaviour
     public Collider body;
     public Transform cameraTransform;
 
+    [SerializeField] AudioSource deathAudio;
     public GameObject deathParticles;
 
     public float moveDistance = 2.5f;
@@ -122,6 +123,8 @@ public class NPCMovement : MonoBehaviour
             gameObject.SetActive(false);
         } else {
             animator.Play("Death");
+            deathAudio.volume = 1.0f * EasyGameState.getPrefVolume();
+            deathAudio.Play();
             player.constraints |= RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
         }
     }

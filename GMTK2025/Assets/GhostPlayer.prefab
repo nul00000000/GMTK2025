@@ -266,6 +266,7 @@ MonoBehaviour:
   animator: {fileID: 1014906862234783756}
   gunTip: {fileID: 2435262946631427218}
   trail: {fileID: -2457358818194773451, guid: f3ba9cf34f4593e4e9466fbb44642e73, type: 3}
+  shrillAudio: {fileID: 3081985114678562454}
 --- !u!54 &3790891172505245990
 Rigidbody:
   m_ObjectHideFlags: 0

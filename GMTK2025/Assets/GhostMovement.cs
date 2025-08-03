@@ -12,7 +12,7 @@ public class GhostMovement : MonoBehaviour {
     [SerializeField] Animator animator;
     [SerializeField] Transform gunTip;
     [SerializeField] TrailRenderer trail;
-
+    [SerializeField] AudioSource shrillAudio;
     [System.NonSerialized]
     public Transform player;
 
@@ -175,6 +175,9 @@ public class GhostMovement : MonoBehaviour {
             if(seen && !lastPlayerSeen) {
                 playerSeenSince = Time.fixedTime;
                 Debug.Log("Player entered vision of ghost " + ghostNum);
+                shrillAudio.volume = 1.0f * EasyGameState.getPrefVolume();
+                shrillAudio.Play();
+                
             } else if(seen && Time.fixedTime > playerSeenSince + 2) {
                 EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
             }
