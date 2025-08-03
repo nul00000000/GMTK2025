@@ -178,6 +178,7 @@ public class GhostMovement : MonoBehaviour {
             } else if(seen && Time.fixedTime > playerSeenSince + 1) {
                 EasyGameState.DoGameLost(ghostNum, lostCameraPosition);
             }
+            player.SetIndicatorEnabled(seen);
             lastPlayerSeen = seen;
         }
     }

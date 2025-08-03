@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour {
     public CharacterController controller;
     public Transform cameraTransform;
 
+    public GameObject indicator;
+
     public float maxPitch = 90.0f;
 
     public float mouseSensitivity = 5;
@@ -43,6 +45,8 @@ public class PlayerMovement : MonoBehaviour {
 
     Quaternion baseRotation;
     public LayerMask doorLayer;
+
+    private bool shouldShowIndicator = false;
 
     public void SetToTime(float timeFromStart, float newStartTime) {
         int first = record.Count - 2;
@@ -87,6 +91,10 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         startTime = newStartTime;
+    }
+
+    public void SetIndicatorEnabled(bool enabled) {
+        indicator.SetEnabled(enabled);
     }
 
     void Start() {
@@ -217,5 +225,10 @@ public class PlayerMovement : MonoBehaviour {
     //         Debug.Log("Not Grounded!");
     //     }
     // }
+
+    void LateUpdate() {
+        
+        shouldShowIndicator = false;
+    }
 
 }
